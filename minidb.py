@@ -202,9 +202,12 @@ class Collection:
 
 class Database:
     def __init__(self, url, auth_token=None):
-        base = url.strip().replace("libsql://", "https://").rstrip("/")
-        self.pipeline_url = base + "/v2/pipeline"
-        self.auth_token = auth_token.strip() if auth_token else auth_token
+        host = url.strip().strip("'\"").strip()
+        host = re.sub(r"^(?:[a-zA-Z][a-zA-Z0-9+.-]*://)+", "", host).strip("/")
+        self.pipeline_url = f"https://{host}/v2/pipeline"
+        if auth_token:
+            auth_token = auth_token.strip().strip("'\"").strip()
+        self.auth_token = auth_token
         self.lock = threading.RLock()
         self._pipeline([
             ("CREATE TABLE IF NOT EXISTS docs (col TEXT NOT NULL, data TEXT NOT NULL)", None),
