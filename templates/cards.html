@@ -6,7 +6,7 @@
   {% for c in cards %}
   <div class="space-y-4 fade-up" data-testid="card-{{ c.last4 }}">
     <div class="relative aspect-[1.586] max-w-sm rounded-2xl p-6 text-white grain {{ 'bank-card-gold' if c.kind == 'credit' else 'bank-card' }} {{ 'grayscale opacity-60' if c.blocked }}">
-      <div class="flex justify-between"><span class="font-head font-bold">Danubia<span class="text-gold">Bank</span></span><span class="text-xs">{{ c.brand }}</span></div>
+      <div class="flex justify-between"><span class="font-head font-bold">Unicredit Austria Bank<span class="text-gold">Bank</span></span><span class="text-xs">{{ c.brand }}</span></div>
       <div class="mt-6 h-9 w-12 rounded-md bg-gradient-to-br from-yellow-200 to-yellow-500 opacity-90"></div>
       <p class="font-mono text-lg tracking-widest mt-5">•••• •••• •••• {{ c.last4 }}</p>
       <div class="flex justify-between text-xs mt-3"><span>{{ c.holder }}</span><span>{{ _('Gültig bis') }} {{ c.expiry }}</span></div>

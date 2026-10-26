@@ -1,4 +1,4 @@
-"""Danubia Bank brand mark: a gold "D" with the Danube flowing through it. Shared by PDFs (reportlab)."""
+"""Unicredit Austria Bank Bank brand mark: a gold "D" with the Danube flowing through it. Shared by PDFs (reportlab)."""
 from math import pi, sin
 from pathlib import Path
 
@@ -58,7 +58,7 @@ def draw_logo(c, x, y, size, light=True):
     draw_mark(c, x, y, size)
     c.setFillColor(colors.white if light else colors.HexColor(NAVY))
     c.setFont(FONT, size * 0.52)
-    c.drawString(x + size * 1.25, y + size * 0.36, "Danubia")
+    c.drawString(x + size * 1.25, y + size * 0.36, "Unicredit Austria Bank")
     c.setFillColor(colors.HexColor(GOLD))
     c.setFont(FONT, size * 0.2)
     c.drawString(x + size * 1.27, y + size * 0.06, "B  A  N  K")

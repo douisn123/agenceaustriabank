@@ -7,10 +7,10 @@
 {% macro logo(light=False, size='h-9 w-9', text='text-lg', bank='text-[9px]') %}
   <a href="{{ url_for('dashboard') }}" class="flex items-center gap-2.5" data-testid="brand-logo">
     <img src="{{ url_for('static', filename='logo-mark.png') }}"
-     alt="Danubia Bank"
+     alt="Unicredit Austria Bank Bank"
      class="{{ size }} object-contain {{ 'ring-1 ring-white/20' if light }}">
     <span class="flex flex-col leading-none">
-      <span class="font-head font-extrabold {{ text }} tracking-tight {{ 'text-white' if light else 'text-navy' }}">Danubia</span>
+      <span class="font-head font-extrabold {{ text }} tracking-tight {{ 'text-white' if light else 'text-navy' }}">Unicredit Austria Bank</span>
       <span class="font-head font-bold {{ bank }} tracking-[0.45em] text-gold mt-1">BANK</span>
     </span>
   </a>
