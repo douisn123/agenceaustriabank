@@ -4,4 +4,5 @@ Babel==2.18.0
 python-dotenv==1.2.1
 reportlab==5.1.0
 resend==2.50.0
-libsql-client
+requests
+resend
