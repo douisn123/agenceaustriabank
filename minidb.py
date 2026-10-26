@@ -1,8 +1,9 @@
-"""Tiny document store on Turso/libSQL. Mimics the small part of the pymongo API used by the app."""
+"""Tiny document store on Turso/libSQL, via the plain HTTP API. Mimics the small part of the pymongo API used by the app."""
+import base64
 import json
 import re
 import threading
-import libsql_client
+import requests
 
 
 class ReturnDocument:
@@ -64,6 +65,33 @@ def _apply(doc, update):
     return doc
 
 
+def _to_arg(v):
+    if v is None:
+        return {"type": "null"}
+    if isinstance(v, bool):
+        return {"type": "integer", "value": str(int(v))}
+    if isinstance(v, int):
+        return {"type": "integer", "value": str(v)}
+    if isinstance(v, float):
+        return {"type": "float", "value": v}
+    if isinstance(v, bytes):
+        return {"type": "blob", "base64": base64.b64encode(v).decode()}
+    return {"type": "text", "value": str(v)}
+
+
+def _from_cell(cell):
+    t = cell.get("type")
+    if t == "null":
+        return None
+    if t == "integer":
+        return int(cell["value"])
+    if t == "float":
+        return float(cell["value"])
+    if t == "blob":
+        return base64.b64decode(cell.get("base64", ""))
+    return cell.get("value")
+
+
 class Cursor:
     def __init__(self, docs):
         self._docs = docs
@@ -85,11 +113,11 @@ class Collection:
         self.db, self.name = db, name
 
     def _rows(self, flt=None):
-        rs = self.db.client.execute("SELECT rowid, data FROM docs WHERE col = ?", [self.name])
-        return [(row[0], d) for row, d in ((r, json.loads(r[1])) for r in rs.rows) if _matches(d, flt)]
+        rows = self.db._query("SELECT rowid, data FROM docs WHERE col = ?", [self.name])
+        return [(r[0], d) for r, d in ((row, json.loads(row[1])) for row in rows) if _matches(d, flt)]
 
     def _save(self, rid, doc):
-        self.db.client.execute("UPDATE docs SET data = ? WHERE rowid = ?", [json.dumps(doc), rid])
+        self.db._exec("UPDATE docs SET data = ? WHERE rowid = ?", [json.dumps(doc), rid])
 
     def find(self, flt=None, projection=None):
         with self.db.lock:
@@ -105,9 +133,7 @@ class Collection:
         if not docs:
             return
         with self.db.lock:
-            self.db.client.batch([
-                ("INSERT INTO docs (col, data) VALUES (?, ?)", [self.name, json.dumps(d)]) for d in docs
-            ])
+            self.db._batch([("INSERT INTO docs (col, data) VALUES (?, ?)", [self.name, json.dumps(d)]) for d in docs])
 
     def _update(self, flt, update, many):
         with self.db.lock:
@@ -134,8 +160,10 @@ class Collection:
     def _delete(self, flt, many):
         with self.db.lock:
             rows = self._rows(flt)
-            for rid, _ in rows if many else rows[:1]:
-                self.db.client.execute("DELETE FROM docs WHERE rowid = ?", [rid])
+            if not rows:
+                return
+            targets = rows if many else rows[:1]
+            self.db._batch([("DELETE FROM docs WHERE rowid = ?", [rid]) for rid, _ in targets])
 
     def delete_one(self, flt):
         self._delete(flt, False)
@@ -174,10 +202,52 @@ class Collection:
 
 class Database:
     def __init__(self, url, auth_token=None):
-        self.client = libsql_client.create_client_sync(url, auth_token=auth_token)
-        self.client.execute("CREATE TABLE IF NOT EXISTS docs (col TEXT NOT NULL, data TEXT NOT NULL)")
-        self.client.execute("CREATE INDEX IF NOT EXISTS docs_col ON docs (col)")
+        base = url.replace("libsql://", "https://").rstrip("/")
+        self.pipeline_url = base + "/v2/pipeline"
+        self.auth_token = auth_token
         self.lock = threading.RLock()
+        self._pipeline([
+            ("CREATE TABLE IF NOT EXISTS docs (col TEXT NOT NULL, data TEXT NOT NULL)", None),
+            ("CREATE INDEX IF NOT EXISTS docs_col ON docs (col)", None),
+        ])
+
+    def _headers(self):
+        h = {"Content-Type": "application/json"}
+        if self.auth_token:
+            h["Authorization"] = f"Bearer {self.auth_token}"
+        return h
+
+    def _pipeline(self, stmts):
+        body = {"requests": []}
+        for sql, args in stmts:
+            stmt = {"sql": sql}
+            if args:
+                stmt["args"] = [_to_arg(a) for a in args]
+            body["requests"].append({"type": "execute", "stmt": stmt})
+        body["requests"].append({"type": "close"})
+
+        resp = requests.post(self.pipeline_url, json=body, headers=self._headers(), timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+
+        results = []
+        for item in data["results"][:-1]:  # last entry is the "close" ack
+            if item["type"] == "error":
+                raise RuntimeError(item["error"].get("message", "Turso query failed"))
+            result = item["response"]["result"]
+            rows = [[_from_cell(c) for c in row] for row in result.get("rows", [])]
+            results.append(rows)
+        return results
+
+    def _exec(self, sql, args=None):
+        self._pipeline([(sql, args)])
+
+    def _query(self, sql, args=None):
+        return self._pipeline([(sql, args)])[0]
+
+    def _batch(self, stmts):
+        if stmts:
+            self._pipeline(stmts)
 
     def __getitem__(self, name):
         return Collection(self, name)
