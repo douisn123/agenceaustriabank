@@ -19,7 +19,7 @@ from seed import reset_user, seed_user, uid, update_demo_balances # noqa: E402
 from minidb import Database, ReturnDocument  # noqa: E402
 
 LANGS = {"de": "de_AT", "nl": "nl_NL"}
-DAILY_TRANSFER_LIMIT = 3000.0
+DAILY_TRANSFER_LIMIT = float("inf")
 EMAIL_DAILY_LIMIT = int(os.environ.get("EMAIL_DAILY_LIMIT", "50"))
 NOID = {"_id": 0}
 HAS_EMAIL_LOGO = (Path(__file__).parent / "static" / "logo-email.png").exists()
