@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+  <h1 class="text-2xl sm:text-3xl font-bold tracking-tight" data-testid="page-title">{{ _('Mitteilungen') }}</h1>
+  <form method="post"><button class="btn btn-ghost btn-sm" data-testid="mark-all-read-button">{{ _('Alle als gelesen markieren') }}</button></form>
+</div>
+<div class="card divide-y divide-slate-100">
+  {% for n in notes %}
+  <div class="p-4 flex items-start justify-between gap-4 {{ 'bg-gold/5' if not n.read }}" data-testid="notification-item">
+    <div><p class="text-sm {{ 'font-semibold' if not n.read }}">{% if not n.read %}<span class="badge bg-gold text-navy mr-2">{{ _('Neu') }}</span>{% endif %}{{ note_text(n) }}</p><p class="text-xs text-slate-400 mt-1">{{ n.date|fdate(True) }}</p></div>
+    {% if not n.read %}<form method="post"><input type="hidden" name="id" value="{{ n.id }}"><button class="text-xs underline shrink-0" data-testid="mark-read-button">{{ _('Gelesen') }}</button></form>{% endif %}
+  </div>
+  {% else %}<p class="p-4 text-sm text-slate-500">{{ _('Keine neuen Mitteilungen.') }}</p>{% endfor %}
+</div>
+{% endblock %}

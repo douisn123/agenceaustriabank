@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% from '_ben_form.html' import ben_form %}
+{% block content %}
+<h1 class="text-2xl sm:text-3xl font-bold tracking-tight" data-testid="page-title">{{ _('Überweisung') }}</h1>
+<p class="text-sm text-slate-500 mt-1 mb-8">{{ _('SEPA-Überweisung an einen gespeicherten Empfänger.') }} · {{ _('Tageslimit: € 3.000') }}</p>
+<div class="grid lg:grid-cols-5 gap-6">
+  <form method="post" class="lg:col-span-3 card p-6 space-y-5" data-testid="transfer-form">
+    <input type="hidden" name="step" value="review">
+    <label class="block"><span class="label">{{ _('Auftraggeberkonto') }}</span>
+      <select name="account_id" class="input" data-testid="transfer-account-select">
+        {% for a in accounts %}<option value="{{ a.id }}">{{ a.name }} · {{ a.balance|money }}</option>{% endfor %}
+      </select></label>
+    <label class="block"><span class="label">{{ _('Empfänger') }}</span>
+      <select name="beneficiary_id" class="input" required data-testid="transfer-beneficiary-select">
+        <option value="">{{ _('Empfänger wählen') }}</option>
+        {% for b in bens %}<option value="{{ b.id }}" {{ 'selected' if form.get('beneficiary_id') == b.id }}>{{ b.name }} · {{ b.iban|iban }}</option>{% endfor %}
+      </select></label>
+    <label class="block"><span class="label">{{ _('Betrag') }} (EUR)</span><input name="amount" value="{{ form.get('amount', '') }}" inputmode="decimal" class="input font-mono text-lg" required data-testid="transfer-amount-input"></label>
+    <label class="block"><span class="label">{{ _('Verwendungszweck') }}</span><input name="purpose" value="{{ form.get('purpose', '') }}" maxlength="140" class="input" required data-testid="transfer-purpose-input"></label>
+    <button class="btn" data-testid="transfer-next-button">{{ _('Weiter') }}</button>
+  </form>
+  <details class="lg:col-span-2 card p-6 h-fit" data-testid="new-ben-inline">
+    <summary class="font-semibold cursor-pointer" data-testid="new-ben-toggle">+ {{ _('Neuer Empfänger') }}</summary>
+    <div class="mt-4">{{ ben_form(None, 'transfer') }}</div>
+  </details>
+</div>
+
+<h2 class="text-lg font-semibold mt-12 mb-4" id="standing">{{ _('Daueraufträge') }}</h2>
+<div class="grid lg:grid-cols-5 gap-6">
+  <div class="lg:col-span-3 space-y-3">
+    {% for o in orders %}
+    <div class="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-testid="standing-order">
+      <div>
+        <p class="font-semibold">{{ ben_map.get(o.beneficiary_id, '–') }} · <span class="font-mono">{{ o.amount|money }}</span></p>
+        <p class="text-xs text-slate-500">{{ o.purpose }} · {{ _('Monatlich') if o.interval == 'monthly' else _('Wöchentlich') }} · {{ _('Nächste Ausführung') }}: {{ o.next_date|fdate }}</p>
+        <span class="badge mt-1 {{ 'bg-green-100 text-green-800' if o.active else 'bg-amber-100 text-amber-800' }}">{{ _('Aktiv') if o.active else _('Pausiert') }}</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <form method="post" action="{{ url_for('order_action', oid=o.id, action='execute') }}"><button class="btn btn-gold btn-sm" data-testid="standing-execute-button">{{ _('Jetzt ausführen') }}</button></form>
+        <form method="post" action="{{ url_for('order_action', oid=o.id, action='toggle') }}"><button class="btn btn-ghost btn-sm" data-testid="standing-toggle-button">{{ _('Pausieren') if o.active else _('Fortsetzen') }}</button></form>
+        <form method="post" action="{{ url_for('order_action', oid=o.id, action='delete') }}"><button class="btn btn-danger btn-sm" data-testid="standing-delete-button">{{ _('Löschen') }}</button></form>
+      </div>
+    </div>
+    {% else %}<p class="text-sm text-slate-500">{{ _('Keine Daueraufträge.') }}</p>{% endfor %}
+  </div>
+  <form method="post" action="{{ url_for('order_add') }}" class="lg:col-span-2 card p-6 space-y-4 h-fit" data-testid="standing-form">
+    <h3 class="font-semibold">{{ _('Dauerauftrag anlegen') }}</h3>
+    <input type="hidden" name="account_id" value="{{ accounts[0].id }}">
+    <select name="beneficiary_id" class="input" required data-testid="standing-ben-select">{% for b in bens %}<option value="{{ b.id }}">{{ b.name }}</option>{% endfor %}</select>
+    <input name="amount" placeholder="{{ _('Betrag') }}" class="input font-mono" required data-testid="standing-amount-input">
+    <input name="purpose" placeholder="{{ _('Verwendungszweck') }}" class="input" required data-testid="standing-purpose-input">
+    <select name="interval" class="input" data-testid="standing-interval-select"><option value="monthly">{{ _('Monatlich') }}</option><option value="weekly">{{ _('Wöchentlich') }}</option></select>
+    <label class="block"><span class="label">{{ _('Nächste Ausführung') }}</span><input type="date" name="next_date" class="input" required data-testid="standing-date-input"></label>
+    <button class="btn" data-testid="standing-create-button">{{ _('Anlegen') }}</button>
+  </form>
+</div>
+{% endblock %}

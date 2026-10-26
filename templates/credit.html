@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-2xl sm:text-3xl font-bold tracking-tight" data-testid="page-title">{{ _('Kredit') }}</h1>
+<p class="text-sm text-slate-500 mt-1 mb-8">{{ _('Laufende Kredite, Rechner und Kreditanfrage.') }}</p>
+<h2 class="text-lg font-semibold mb-4">{{ _('Laufende Kredite') }}</h2>
+<div class="grid sm:grid-cols-2 gap-4">
+  {% for l in loans %}
+  <div class="card p-5" data-testid="loan-card">
+    <p class="font-semibold">{{ l.name }} <span class="badge bg-slate-100 ml-1">{{ l.rate|num }} %</span></p>
+    <div class="h-2 rounded-full bg-slate-100 mt-3 overflow-hidden"><div class="h-full bg-vienna" style="width: {{ ((1 - l.remaining / l.principal) * 100)|round(0) }}%"></div></div>
+    <dl class="grid grid-cols-2 gap-y-1 text-sm mt-3">
+      <dt class="label">{{ _('Restschuld') }}</dt><dd class="font-mono text-right">{{ l.remaining|money }}</dd>
+      <dt class="label">{{ _('Monatliche Rate') }}</dt><dd class="font-mono text-right">{{ l.monthly|money }}</dd>
+      <dt class="label">{{ _('Laufzeitende') }}</dt><dd class="text-right">{{ l.end_date|fdate }}</dd>
+    </dl>
+  </div>
+  {% endfor %}
+</div>
+<div class="grid lg:grid-cols-2 gap-6 mt-10">
+  <form method="post" class="card p-6 space-y-4" data-testid="loan-simulator" oninput="calc()">
+    <h3 class="font-semibold">{{ _('Kreditrechner') }}</h3>
+    <label class="block"><span class="label">{{ _('Betrag') }} (EUR)</span><input id="s_amount" name="amount" type="number" min="1000" max="500000" step="100" value="20000" class="input font-mono" data-testid="sim-amount-input"></label>
+    <label class="block"><span class="label">{{ _('Laufzeit (Monate)') }}</span><input id="s_months" name="months" type="number" min="6" max="360" value="60" class="input font-mono" data-testid="sim-months-input"></label>
+    <label class="block"><span class="label">{{ _('Zinssatz p.a.') }} (%)</span><input id="s_rate" name="rate" type="number" min="0.1" max="20" step="0.1" value="5.9" class="input font-mono" data-testid="sim-rate-input"></label>
+    <div class="rounded-lg bg-navy text-white p-4 grid grid-cols-3 gap-2 text-center">
+      <div><p class="text-[10px] uppercase text-white/60">{{ _('Monatliche Rate') }}</p><p class="font-mono font-semibold" id="r_monthly" data-testid="sim-monthly">–</p></div>
+      <div><p class="text-[10px] uppercase text-white/60">{{ _('Zinsen gesamt') }}</p><p class="font-mono font-semibold" id="r_interest" data-testid="sim-interest">–</p></div>
+      <div><p class="text-[10px] uppercase text-white/60">{{ _('Gesamtkosten') }}</p><p class="font-mono font-semibold" id="r_total" data-testid="sim-total">–</p></div>
+    </div>
+    <label class="block"><span class="label">{{ _('Verwendungszweck') }}</span><input name="purpose" class="input" required data-testid="loan-purpose-input"></label>
+    <button class="btn btn-gold" data-testid="loan-apply-button">{{ _('Kredit anfragen') }}</button>
+  </form>
+  <div class="card p-6 h-fit">
+    <h3 class="font-semibold mb-3">{{ _('Meine Anfragen') }}</h3>
+    {% for a in apps %}<div class="py-2 border-b border-slate-100 last:border-0 text-sm flex justify-between" data-testid="loan-application"><span>{{ a.purpose }} · <span class="font-mono">{{ a.amount|money }}</span> · {{ a.months }} M.</span><span class="badge bg-blue-100 text-blue-800">{{ _('In Prüfung') }}</span></div>
+    {% else %}<p class="text-sm text-slate-500">–</p>{% endfor %}
+  </div>
+</div>
+<script>
+const fmt = new Intl.NumberFormat('{{ "de-AT" if lang == "de" else "nl-NL" }}', {style: 'currency', currency: 'EUR'});
+function calc() {
+  const P = +s_amount.value, n = +s_months.value, r = +s_rate.value / 1200;
+  if (!P || !n) return;
+  const m = r ? P * r / (1 - Math.pow(1 + r, -n)) : P / n;
+  r_monthly.textContent = fmt.format(m); r_total.textContent = fmt.format(m * n); r_interest.textContent = fmt.format(m * n - P);
+}
+calc();
+</script>
+{% endblock %}

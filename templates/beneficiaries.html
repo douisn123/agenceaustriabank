@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% from '_ben_form.html' import ben_form %}
+{% block content %}
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+  <div><h1 class="text-2xl sm:text-3xl font-bold tracking-tight" data-testid="page-title">{{ _('Empfänger') }}</h1><p class="text-sm text-slate-500 mt-1">{{ _('Verwalten Sie Ihre gespeicherten Zahlungsempfänger.') }}</p></div>
+  <form class="flex gap-2"><input name="q" value="{{ q }}" placeholder="{{ _('Suchen…') }}" class="input !mt-0" data-testid="ben-search-input"></form>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+  <div class="lg:col-span-3 space-y-3 min-w-0">
+    {% for b in bens %}
+    <div class="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-testid="ben-card">
+      <div class="min-w-0">
+        <p class="font-semibold">{{ b.name }} {% if b.label %}<span class="badge bg-gold/20 ml-1">{{ b.label }}</span>{% endif %}</p>
+        <p class="font-mono text-xs mt-1">{{ b.iban|iban }} {% if b.bic %}· {{ b.bic }}{% endif %}</p>
+        <p class="text-xs text-slate-500 mt-1 truncate">{{ b.email }}{% if b.bank %} · {{ b.bank }}{% endif %}{% if b.address %} · {{ b.address }}{% endif %}</p>
+      </div>
+      <div class="flex gap-2 shrink-0">
+        <a href="{{ url_for('transfer', beneficiary_id=b.id) }}" class="btn btn-gold btn-sm" data-testid="ben-transfer-button">{{ _('Überweisen') }}</a>
+        <a href="{{ url_for('beneficiaries', edit=b.id) }}" class="btn btn-ghost btn-sm" data-testid="ben-edit-button">{{ _('Bearbeiten') }}</a>
+        <form method="post" action="{{ url_for('ben_delete', bid=b.id) }}" onsubmit="return confirm('{{ _('Empfänger wirklich löschen?') }}')"><button class="btn btn-danger btn-sm" data-testid="ben-delete-button">{{ _('Löschen') }}</button></form>
+      </div>
+    </div>
+    {% else %}<p class="text-sm text-slate-500">{{ _('Noch keine Empfänger.') }}</p>{% endfor %}
+  </div>
+  <div class="lg:col-span-2 card p-6 h-fit" id="ben-form">
+    <h3 class="font-semibold mb-4" data-testid="ben-form-title">{{ _('Empfänger bearbeiten') if editing else _('Empfänger hinzufügen') }}</h3>
+    {{ ben_form(editing) }}
+    {% if editing %}<a href="{{ url_for('beneficiaries') }}" class="text-xs underline mt-3 inline-block">{{ _('Abbrechen') }}</a>{% endif %}
+  </div>
+</div>
+{% endblock %}

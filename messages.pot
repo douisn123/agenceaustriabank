@@ -1,0 +1,759 @@
+# Translations template for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-10-25 12:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app.py:68 templates/base.html:20 templates/dashboard.html:14
+#: templates/statements.html:9 templates/transfer.html:4
+msgid "Überweisung"
+msgstr ""
+
+#: app.py:68 templates/statements.html:9
+msgid "Dauerauftrag"
+msgstr ""
+
+#: app.py:68 templates/statements.html:9
+msgid "Kartenzahlung"
+msgstr ""
+
+#: app.py:68 templates/statements.html:9
+msgid "Lastschrift"
+msgstr ""
+
+#: app.py:69
+msgid "Gehalt"
+msgstr ""
+
+#: app.py:69 templates/statements.html:9
+msgid "Umbuchung"
+msgstr ""
+
+#: app.py:69
+msgid "Kreditrate"
+msgstr ""
+
+#: app.py:77
+#, python-format
+msgid "Überweisung über %(amount)s an %(name)s durchgeführt."
+msgstr ""
+
+#: app.py:78
+#, python-format
+msgid "Bestätigung an %(name)s (%(email)s) gesendet."
+msgstr ""
+
+#: app.py:79
+#, python-format
+msgid "Bestätigung an %(name)s konnte nicht gesendet werden."
+msgstr ""
+
+#: app.py:80
+#, python-format
+msgid "Karte ****%(last4)s bei %(merchant)s verwendet: %(amount)s."
+msgstr ""
+
+#: app.py:81
+#, python-format
+msgid "Nächste Rate %(name)s: %(amount)s wird in Kürze fällig."
+msgstr ""
+
+#: app.py:82
+#, python-format
+msgid "Gehaltseingang: %(amount)s."
+msgstr ""
+
+#: app.py:83
+#, python-format
+msgid "Karte ****%(last4)s wurde gesperrt."
+msgstr ""
+
+#: app.py:84
+#, python-format
+msgid "Karte ****%(last4)s wurde entsperrt."
+msgstr ""
+
+#: app.py:85
+#, python-format
+msgid "%(amount)s auf %(name)s umgebucht."
+msgstr ""
+
+#: app.py:85
+#, python-format
+msgid "%(amount)s von %(name)s umgebucht."
+msgstr ""
+
+#: app.py:86
+#, python-format
+msgid "Kreditanfrage über %(amount)s eingereicht."
+msgstr ""
+
+#: app.py:153
+msgid "Verfügernummer oder Passwort ist falsch."
+msgstr ""
+
+#: app.py:168
+msgid "Demo-Daten zurückgesetzt"
+msgstr ""
+
+#: app.py:189 app.py:361 app.py:472
+msgid "Bitte alle Felder korrekt ausfüllen."
+msgstr ""
+
+#: app.py:192 app.py:437
+msgid "Gespeichert"
+msgstr ""
+
+#: app.py:202
+msgid "Name ist ein Pflichtfeld."
+msgstr ""
+
+#: app.py:204
+msgid "Ungültige IBAN"
+msgstr ""
+
+#: app.py:206
+msgid "Ungültige E-Mail-Adresse"
+msgstr ""
+
+#: app.py:236
+msgid "Empfänger gespeichert"
+msgstr ""
+
+#: app.py:248 app.py:377
+msgid "Gelöscht"
+msgstr ""
+
+#: app.py:260 app.py:444
+msgid "Bitte einen gültigen Betrag eingeben."
+msgstr ""
+
+#: app.py:262 app.py:272 app.py:444
+msgid "Nicht genügend Guthaben auf dem Konto."
+msgstr ""
+
+#: app.py:268
+msgid "Tageslimit von € 3.000 überschritten."
+msgstr ""
+
+#: app.py:307
+msgid "Bitte Betrag und Verwendungszweck angeben."
+msgstr ""
+
+#: app.py:365
+msgid "Dauerauftrag angelegt"
+msgstr ""
+
+#: app.py:397
+msgid "Karte entsperrt"
+msgstr ""
+
+#: app.py:397
+msgid "Karte gesperrt"
+msgstr ""
+
+#: app.py:400 app.py:405 app.py:421
+msgid "Aktualisiert"
+msgstr ""
+
+#: app.py:407
+msgid "Limit muss zwischen 50 und 5.000 liegen."
+msgstr ""
+
+#: app.py:453
+msgid "Umbuchung durchgeführt"
+msgstr ""
+
+#: app.py:477
+msgid "Kreditanfrage eingereicht"
+msgstr ""
+
+#: templates/_ben_form.html:5 templates/profile.html:7
+msgid "Name"
+msgstr ""
+
+#: templates/_ben_form.html:5
+msgid "Bank"
+msgstr ""
+
+#: templates/_ben_form.html:5 templates/profile.html:7
+msgid "E-Mail"
+msgstr ""
+
+#: templates/_ben_form.html:5 templates/profile.html:7
+msgid "Adresse"
+msgstr ""
+
+#: templates/_ben_form.html:5
+msgid "Bezeichnung (optional)"
+msgstr ""
+
+#: templates/_ben_form.html:9 templates/cards.html:19 templates/profile.html:11
+#: templates/savings.html:28
+msgid "Speichern"
+msgstr ""
+
+#: templates/base.html:5
+msgid "Online-Banking"
+msgstr ""
+
+#: templates/base.html:16 templates/login.html:11
+msgid "Demo – alle Daten sind fiktiv, es wird kein echtes Geld bewegt."
+msgstr ""
+
+#: templates/base.html:17
+msgid "Demo zurücksetzen"
+msgstr ""
+
+#: templates/base.html:20
+msgid "Übersicht"
+msgstr ""
+
+#: templates/base.html:20 templates/beneficiaries.html:5
+#: templates/dashboard.html:15 templates/transfer.html:13
+#: templates/transfer_done.html:7 templates/transfer_review.html:7
+msgid "Empfänger"
+msgstr ""
+
+#: templates/base.html:20 templates/cards.html:3 templates/dashboard.html:16
+msgid "Karten"
+msgstr ""
+
+#: templates/base.html:20 templates/debits.html:3
+msgid "Lastschriften"
+msgstr ""
+
+#: templates/base.html:20 templates/savings.html:3
+msgid "Sparen"
+msgstr ""
+
+#: templates/base.html:20 templates/credit.html:3
+msgid "Kredit"
+msgstr ""
+
+#: templates/base.html:20
+msgid "Umsätze & Auszüge"
+msgstr ""
+
+#: templates/base.html:20 templates/base.html:41 templates/notifications.html:4
+msgid "Mitteilungen"
+msgstr ""
+
+#: templates/base.html:20 templates/profile.html:3
+msgid "Meine Daten"
+msgstr ""
+
+#: templates/base.html:45
+msgid "Abmelden"
+msgstr ""
+
+#: templates/base.html:56
+msgid "IBAN kopiert"
+msgstr ""
+
+#: templates/beneficiaries.html:5
+msgid "Verwalten Sie Ihre gespeicherten Zahlungsempfänger."
+msgstr ""
+
+#: templates/beneficiaries.html:6 templates/statements.html:7
+msgid "Suchen…"
+msgstr ""
+
+#: templates/beneficiaries.html:18
+msgid "Überweisen"
+msgstr ""
+
+#: templates/beneficiaries.html:19 templates/profile.html:18
+msgid "Bearbeiten"
+msgstr ""
+
+#: templates/beneficiaries.html:20
+msgid "Empfänger wirklich löschen?"
+msgstr ""
+
+#: templates/beneficiaries.html:20 templates/transfer.html:41
+msgid "Löschen"
+msgstr ""
+
+#: templates/beneficiaries.html:23
+msgid "Noch keine Empfänger."
+msgstr ""
+
+#: templates/beneficiaries.html:26
+msgid "Empfänger bearbeiten"
+msgstr ""
+
+#: templates/beneficiaries.html:26
+msgid "Empfänger hinzufügen"
+msgstr ""
+
+#: templates/beneficiaries.html:28 templates/profile.html:11
+msgid "Abbrechen"
+msgstr ""
+
+#: templates/cards.html:4
+msgid "Limits, Sperre und Auslandseinsatz verwalten."
+msgstr ""
+
+#: templates/cards.html:12
+msgid "Gültig bis"
+msgstr ""
+
+#: templates/cards.html:13
+msgid "Gesperrt"
+msgstr ""
+
+#: templates/cards.html:16
+msgid "Tageslimit"
+msgstr ""
+
+#: templates/cards.html:17
+msgid "Monatslimit"
+msgstr ""
+
+#: templates/cards.html:21
+msgid "Zahlungen außerhalb Europas"
+msgstr ""
+
+#: templates/cards.html:24
+msgid "Karte entsperren"
+msgstr ""
+
+#: templates/cards.html:24
+msgid "Karte sperren"
+msgstr ""
+
+#: templates/credit.html:4
+msgid "Laufende Kredite, Rechner und Kreditanfrage."
+msgstr ""
+
+#: templates/credit.html:5
+msgid "Laufende Kredite"
+msgstr ""
+
+#: templates/credit.html:12
+msgid "Restschuld"
+msgstr ""
+
+#: templates/credit.html:13 templates/credit.html:26
+msgid "Monatliche Rate"
+msgstr ""
+
+#: templates/credit.html:14
+msgid "Laufzeitende"
+msgstr ""
+
+#: templates/credit.html:21
+msgid "Kreditrechner"
+msgstr ""
+
+#: templates/credit.html:22 templates/savings.html:20
+#: templates/transfer.html:18 templates/transfer.html:50
+#: templates/transfer_done.html:8 templates/transfer_review.html:8
+msgid "Betrag"
+msgstr ""
+
+#: templates/credit.html:23
+msgid "Laufzeit (Monate)"
+msgstr ""
+
+#: templates/credit.html:24
+msgid "Zinssatz p.a."
+msgstr ""
+
+#: templates/credit.html:27
+msgid "Zinsen gesamt"
+msgstr ""
+
+#: templates/credit.html:28
+msgid "Gesamtkosten"
+msgstr ""
+
+#: templates/credit.html:30 templates/transfer.html:19
+#: templates/transfer.html:51 templates/transfer_review.html:9
+msgid "Verwendungszweck"
+msgstr ""
+
+#: templates/credit.html:31
+msgid "Kredit anfragen"
+msgstr ""
+
+#: templates/credit.html:34
+msgid "Meine Anfragen"
+msgstr ""
+
+#: templates/credit.html:35
+msgid "In Prüfung"
+msgstr ""
+
+#: templates/dashboard.html:5
+msgid "Grüß Gott"
+msgstr ""
+
+#: templates/dashboard.html:10
+msgid "Gesamtsaldo"
+msgstr ""
+
+#: templates/dashboard.html:17
+msgid "Kontoauszüge"
+msgstr ""
+
+#: templates/dashboard.html:21
+msgid "Ungelesene Mitteilungen"
+msgstr ""
+
+#: templates/dashboard.html:21 templates/dashboard.html:38
+msgid "Alle anzeigen"
+msgstr ""
+
+#: templates/dashboard.html:23 templates/notifications.html:13
+msgid "Keine neuen Mitteilungen."
+msgstr ""
+
+#: templates/dashboard.html:26
+msgid "Meine Konten"
+msgstr ""
+
+#: templates/dashboard.html:30
+msgid "Girokonto"
+msgstr ""
+
+#: templates/dashboard.html:30 templates/savings.html:10
+msgid "Sparkonto"
+msgstr ""
+
+#: templates/dashboard.html:38
+msgid "Letzte Umsätze"
+msgstr ""
+
+#: templates/debits.html:4
+msgid "Aktive SEPA-Lastschriftmandate."
+msgstr ""
+
+#: templates/debits.html:7 templates/transfer.html:36
+msgid "Aktiv"
+msgstr ""
+
+#: templates/debits.html:7
+msgid "Ausgesetzt"
+msgstr ""
+
+#: templates/debits.html:7 templates/debits.html:17
+msgid "Widerrufen"
+msgstr ""
+
+#: templates/debits.html:11
+msgid "Gläubiger-ID"
+msgstr ""
+
+#: templates/debits.html:11
+msgid "Mandatsreferenz"
+msgstr ""
+
+#: templates/debits.html:12
+msgid "Letzter Betrag"
+msgstr ""
+
+#: templates/debits.html:16
+msgid "Aussetzen"
+msgstr ""
+
+#: templates/debits.html:16 templates/transfer.html:40
+msgid "Fortsetzen"
+msgstr ""
+
+#: templates/debits.html:17
+msgid "Mandat endgültig widerrufen?"
+msgstr ""
+
+#: templates/login.html:3 templates/login.html:22
+msgid "Anmelden"
+msgstr ""
+
+#: templates/login.html:10
+msgid "Banking an der Donau – klar, sicher, jederzeit."
+msgstr ""
+
+#: templates/login.html:18
+msgid "Willkommen im Online-Banking"
+msgstr ""
+
+#: templates/login.html:18
+msgid "Melden Sie sich mit Ihrer Verfügernummer an."
+msgstr ""
+
+#: templates/login.html:20 templates/login.html:25 templates/profile.html:15
+msgid "Verfügernummer"
+msgstr ""
+
+#: templates/login.html:21 templates/login.html:26
+msgid "Passwort"
+msgstr ""
+
+#: templates/login.html:24
+msgid "Demo-Zugang"
+msgstr ""
+
+#: templates/notifications.html:5
+msgid "Alle als gelesen markieren"
+msgstr ""
+
+#: templates/notifications.html:10
+msgid "Neu"
+msgstr ""
+
+#: templates/notifications.html:11
+msgid "Gelesen"
+msgstr ""
+
+#: templates/profile.html:4
+msgid ""
+"Diese Angaben erscheinen als Auftraggeber in Ihren "
+"Überweisungsbestätigungen."
+msgstr ""
+
+#: templates/profile.html:7
+msgid "PLZ"
+msgstr ""
+
+#: templates/profile.html:7
+msgid "Ort"
+msgstr ""
+
+#: templates/profile.html:7
+msgid "Telefon"
+msgstr ""
+
+#: templates/profile.html:22
+msgid "Bankverbindung"
+msgstr ""
+
+#: templates/profile.html:27
+msgid "IBAN kopieren"
+msgstr ""
+
+#: templates/savings.html:4
+msgid "Zinsen, Sparziele und Umbuchungen."
+msgstr ""
+
+#: templates/savings.html:11
+msgid "Zinssatz"
+msgstr ""
+
+#: templates/savings.html:15
+msgid "Sparziel"
+msgstr ""
+
+#: templates/savings.html:15
+msgid "erreicht"
+msgstr ""
+
+#: templates/savings.html:17
+msgid "von"
+msgstr ""
+
+#: templates/savings.html:21
+msgid "Einzahlen"
+msgstr ""
+
+#: templates/savings.html:22
+msgid "Abheben"
+msgstr ""
+
+#: templates/savings.html:24
+msgid "Ziel ändern"
+msgstr ""
+
+#: templates/savings.html:26
+msgid "Name des Ziels"
+msgstr ""
+
+#: templates/savings.html:27
+msgid "Zielbetrag"
+msgstr ""
+
+#: templates/statements.html:4
+msgid "Umsätze & Kontoauszüge"
+msgstr ""
+
+#: templates/statements.html:5
+msgid "Durchsuchen, filtern und als PDF herunterladen."
+msgstr ""
+
+#: templates/statements.html:8
+msgid "Art"
+msgstr ""
+
+#: templates/statements.html:9
+msgid "Alle"
+msgstr ""
+
+#: templates/statements.html:9
+msgid "Eingänge"
+msgstr ""
+
+#: templates/statements.html:9
+msgid "Ausgänge"
+msgstr ""
+
+#: templates/statements.html:10
+msgid "Von"
+msgstr ""
+
+#: templates/statements.html:11
+msgid "Bis"
+msgstr ""
+
+#: templates/statements.html:12
+msgid "Betrag min."
+msgstr ""
+
+#: templates/statements.html:13
+msgid "Betrag max."
+msgstr ""
+
+#: templates/statements.html:14
+msgid "Filtern"
+msgstr ""
+
+#: templates/statements.html:14
+msgid "Filter zurücksetzen"
+msgstr ""
+
+#: templates/statements.html:19
+msgid "Keine Umsätze gefunden."
+msgstr ""
+
+#: templates/statements.html:22
+msgid "Monatliche Kontoauszüge"
+msgstr ""
+
+#: templates/transfer.html:5
+msgid "SEPA-Überweisung an einen gespeicherten Empfänger."
+msgstr ""
+
+#: templates/transfer.html:5
+msgid "Tageslimit: € 3.000"
+msgstr ""
+
+#: templates/transfer.html:9 templates/transfer_review.html:6
+msgid "Auftraggeberkonto"
+msgstr ""
+
+#: templates/transfer.html:15
+msgid "Empfänger wählen"
+msgstr ""
+
+#: templates/transfer.html:20
+msgid "Weiter"
+msgstr ""
+
+#: templates/transfer.html:23
+msgid "Neuer Empfänger"
+msgstr ""
+
+#: templates/transfer.html:28
+msgid "Daueraufträge"
+msgstr ""
+
+#: templates/transfer.html:35 templates/transfer.html:52
+msgid "Monatlich"
+msgstr ""
+
+#: templates/transfer.html:35 templates/transfer.html:52
+msgid "Wöchentlich"
+msgstr ""
+
+#: templates/transfer.html:35 templates/transfer.html:53
+msgid "Nächste Ausführung"
+msgstr ""
+
+#: templates/transfer.html:36
+msgid "Pausiert"
+msgstr ""
+
+#: templates/transfer.html:39
+msgid "Jetzt ausführen"
+msgstr ""
+
+#: templates/transfer.html:40
+msgid "Pausieren"
+msgstr ""
+
+#: templates/transfer.html:44
+msgid "Keine Daueraufträge."
+msgstr ""
+
+#: templates/transfer.html:47
+msgid "Dauerauftrag anlegen"
+msgstr ""
+
+#: templates/transfer.html:54
+msgid "Anlegen"
+msgstr ""
+
+#: templates/transfer_done.html:5
+msgid "Überweisung durchgeführt"
+msgstr ""
+
+#: templates/transfer_done.html:9
+msgid "Referenz"
+msgstr ""
+
+#: templates/transfer_done.html:10
+msgid "Datum"
+msgstr ""
+
+#: templates/transfer_done.html:11
+msgid "Neuer Kontostand"
+msgstr ""
+
+#: templates/transfer_done.html:14
+msgid "Bestätigung per E-Mail gesendet an"
+msgstr ""
+
+#: templates/transfer_done.html:15
+msgid "E-Mail-Versand ist noch nicht eingerichtet."
+msgstr ""
+
+#: templates/transfer_done.html:16
+msgid "Tageslimit für E-Mails erreicht."
+msgstr ""
+
+#: templates/transfer_done.html:17
+msgid "E-Mail-Bestätigung konnte nicht gesendet werden."
+msgstr ""
+
+#: templates/transfer_done.html:20
+msgid "PDF herunterladen"
+msgstr ""
+
+#: templates/transfer_done.html:21
+msgid "Neue Überweisung"
+msgstr ""
+
+#: templates/transfer_review.html:3
+msgid "Überweisung prüfen"
+msgstr ""
+
+#: templates/transfer_review.html:13
+msgid "Jetzt überweisen"
+msgstr ""
+
+#: templates/transfer_review.html:14
+msgid "Zurück"
+msgstr ""
+

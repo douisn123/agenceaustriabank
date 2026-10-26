@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-2xl sm:text-3xl font-bold tracking-tight" data-testid="page-title">{{ _('Karten') }}</h1>
+<p class="text-sm text-slate-500 mt-1 mb-8">{{ _('Limits, Sperre und Auslandseinsatz verwalten.') }}</p>
+<div class="grid lg:grid-cols-2 gap-8">
+  {% for c in cards %}
+  <div class="space-y-4 fade-up" data-testid="card-{{ c.last4 }}">
+    <div class="relative aspect-[1.586] max-w-sm rounded-2xl p-6 text-white grain {{ 'bank-card-gold' if c.kind == 'credit' else 'bank-card' }} {{ 'grayscale opacity-60' if c.blocked }}">
+      <div class="flex justify-between"><span class="font-head font-bold">Danubia<span class="text-gold">Bank</span></span><span class="text-xs">{{ c.brand }}</span></div>
+      <div class="mt-6 h-9 w-12 rounded-md bg-gradient-to-br from-yellow-200 to-yellow-500 opacity-90"></div>
+      <p class="font-mono text-lg tracking-widest mt-5">•••• •••• •••• {{ c.last4 }}</p>
+      <div class="flex justify-between text-xs mt-3"><span>{{ c.holder }}</span><span>{{ _('Gültig bis') }} {{ c.expiry }}</span></div>
+      {% if c.blocked %}<span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 badge bg-red-600 text-white text-sm" data-testid="card-blocked-badge">{{ _('Gesperrt') }}</span>{% endif %}
+    </div>
+    <div class="card p-5 max-w-sm space-y-4">
+      <div class="flex justify-between text-sm"><span class="label">{{ _('Tageslimit') }}</span><span class="font-mono">{{ c.limit_daily|money }}</span></div>
+      <div class="flex justify-between text-sm"><span class="label">{{ _('Monatslimit') }}</span><span class="font-mono">{{ c.limit_monthly|money }}</span></div>
+      <form method="post" class="flex gap-2"><input type="hidden" name="card_id" value="{{ c.id }}"><input type="hidden" name="action" value="limit">
+        <input name="limit_daily" type="number" min="50" max="5000" value="{{ c.limit_daily }}" class="input !mt-0 font-mono" data-testid="card-limit-input-{{ c.last4 }}"><button class="btn btn-ghost btn-sm" data-testid="card-limit-save-{{ c.last4 }}">{{ _('Speichern') }}</button></form>
+      <form method="post" class="flex items-center justify-between"><input type="hidden" name="card_id" value="{{ c.id }}"><input type="hidden" name="action" value="non_eu">
+        <span class="text-sm">{{ _('Zahlungen außerhalb Europas') }}</span>
+        <button class="relative w-11 h-6 rounded-full transition-colors {{ 'bg-navy' if c.non_eu else 'bg-slate-300' }}" data-testid="card-noneu-toggle-{{ c.last4 }}" aria-pressed="{{ c.non_eu|lower }}"><span class="absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all {{ 'left-[22px]' if c.non_eu else 'left-0.5' }}"></span></button></form>
+      <form method="post"><input type="hidden" name="card_id" value="{{ c.id }}"><input type="hidden" name="action" value="block">
+        <button class="btn w-full {{ 'btn-gold' if c.blocked else 'btn-danger' }}" data-testid="card-block-button-{{ c.last4 }}">{{ _('Karte entsperren') if c.blocked else _('Karte sperren') }}</button></form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

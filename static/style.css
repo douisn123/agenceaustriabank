@@ -1,0 +1,22 @@
+.fade-up { animation: fadeUp .45s ease-out both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+h1, h2, h3 { font-family: "Plus Jakarta Sans", sans-serif; }
+::selection { background: rgba(212, 175, 55, .35); }
+.card { background: #fff; border: 1px solid #e2e8f0; border-radius: .6rem; box-shadow: 0 1px 2px rgba(11, 25, 44, .04); }
+.label { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #64748b; }
+.input { width: 100%; margin-top: .25rem; border: 1px solid #cbd5e1; border-radius: .4rem; padding: .55rem .75rem; font-size: .9rem; background: #fff; }
+.input:focus { outline: none; border-color: #1E3E62; box-shadow: 0 0 0 3px rgba(30, 62, 98, .15); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; border-radius: .4rem; padding: .55rem 1rem; font-size: .875rem; font-weight: 600; background: #0B192C; color: #fff; transition: transform .15s, background-color .15s; }
+.btn:hover { background: #1E3E62; transform: scale(1.01); }
+.btn-gold { background: #D4AF37; color: #0B192C; }
+.btn-gold:hover { background: #c49f2a; }
+.btn-ghost { background: transparent; color: #0B192C; border: 1px solid #cbd5e1; }
+.btn-ghost:hover { background: #f1f5f9; }
+.btn-danger { background: #dc2626; }
+.btn-danger:hover { background: #b91c1c; }
+.btn-sm { padding: .35rem .7rem; font-size: .78rem; }
+.badge { display: inline-block; border-radius: 999px; padding: .1rem .6rem; font-size: .72rem; font-weight: 600; }
+.bank-card { background: linear-gradient(135deg, #0B192C 0%, #1E3E62 60%, #2c5282 100%); }
+.bank-card-gold { background: linear-gradient(135deg, #3b2f0b 0%, #8a6d1d 55%, #D4AF37 100%); }
+.grain { position: relative; }
+.grain::after { content: ""; position: absolute; inset: 0; opacity: .08; pointer-events: none; border-radius: inherit; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }

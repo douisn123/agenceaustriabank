@@ -1,0 +1,5 @@
+{% with msgs = get_flashed_messages(with_categories=true) %}{% if msgs %}
+<div class="space-y-2 mb-6">{% for cat, m in msgs %}
+  <div class="rounded-md px-4 py-3 text-sm fade-up {{ 'bg-red-50 text-red-800 border border-red-200' if cat == 'error' else 'bg-green-50 text-green-800 border border-green-200' }}" data-testid="flash-{{ cat }}">{{ m }}</div>
+{% endfor %}</div>
+{% endif %}{% endwith %}

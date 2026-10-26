@@ -1,0 +1,762 @@
+# Dutch translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-10-25 12:00+0000\n"
+"PO-Revision-Date: 2026-10-25 12:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: nl\n"
+"Language-Team: nl <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app.py:68 templates/base.html:20 templates/dashboard.html:14
+#: templates/statements.html:9 templates/transfer.html:4
+msgid "Überweisung"
+msgstr "Overschrijving"
+
+#: app.py:68 templates/statements.html:9
+msgid "Dauerauftrag"
+msgstr "Periodieke opdracht"
+
+#: app.py:68 templates/statements.html:9
+msgid "Kartenzahlung"
+msgstr "Kaartbetaling"
+
+#: app.py:68 templates/statements.html:9
+msgid "Lastschrift"
+msgstr "Incasso"
+
+#: app.py:69
+msgid "Gehalt"
+msgstr "Salaris"
+
+#: app.py:69 templates/statements.html:9
+msgid "Umbuchung"
+msgstr "Overboeking"
+
+#: app.py:69
+msgid "Kreditrate"
+msgstr "Kredietaflossing"
+
+#: app.py:77
+#, python-format
+msgid "Überweisung über %(amount)s an %(name)s durchgeführt."
+msgstr "Overschrijving van %(amount)s naar %(name)s uitgevoerd."
+
+#: app.py:78
+#, python-format
+msgid "Bestätigung an %(name)s (%(email)s) gesendet."
+msgstr "Bevestiging verzonden naar %(name)s (%(email)s)."
+
+#: app.py:79
+#, python-format
+msgid "Bestätigung an %(name)s konnte nicht gesendet werden."
+msgstr "Bevestiging naar %(name)s kon niet worden verzonden."
+
+#: app.py:80
+#, python-format
+msgid "Karte ****%(last4)s bei %(merchant)s verwendet: %(amount)s."
+msgstr "Kaart ****%(last4)s gebruikt bij %(merchant)s: %(amount)s."
+
+#: app.py:81
+#, python-format
+msgid "Nächste Rate %(name)s: %(amount)s wird in Kürze fällig."
+msgstr "Volgende termijn %(name)s: %(amount)s vervalt binnenkort."
+
+#: app.py:82
+#, python-format
+msgid "Gehaltseingang: %(amount)s."
+msgstr "Salaris ontvangen: %(amount)s."
+
+#: app.py:83
+#, python-format
+msgid "Karte ****%(last4)s wurde gesperrt."
+msgstr "Kaart ****%(last4)s is geblokkeerd."
+
+#: app.py:84
+#, python-format
+msgid "Karte ****%(last4)s wurde entsperrt."
+msgstr "Kaart ****%(last4)s is gedeblokkeerd."
+
+#: app.py:85
+#, python-format
+msgid "%(amount)s auf %(name)s umgebucht."
+msgstr "%(amount)s overgeboekt naar %(name)s."
+
+#: app.py:85
+#, python-format
+msgid "%(amount)s von %(name)s umgebucht."
+msgstr "%(amount)s overgeboekt van %(name)s."
+
+#: app.py:86
+#, python-format
+msgid "Kreditanfrage über %(amount)s eingereicht."
+msgstr "Kredietaanvraag van %(amount)s ingediend."
+
+#: app.py:153
+msgid "Verfügernummer oder Passwort ist falsch."
+msgstr "Klantnummer of wachtwoord is onjuist."
+
+#: app.py:168
+msgid "Demo-Daten zurückgesetzt"
+msgstr "Demogegevens gereset"
+
+#: app.py:189 app.py:361 app.py:472
+msgid "Bitte alle Felder korrekt ausfüllen."
+msgstr "Vul alle velden correct in."
+
+#: app.py:192 app.py:437
+msgid "Gespeichert"
+msgstr "Opgeslagen"
+
+#: app.py:202
+msgid "Name ist ein Pflichtfeld."
+msgstr "Naam is verplicht."
+
+#: app.py:204
+msgid "Ungültige IBAN"
+msgstr "Ongeldige IBAN"
+
+#: app.py:206
+msgid "Ungültige E-Mail-Adresse"
+msgstr "Ongeldig e-mailadres"
+
+#: app.py:236
+msgid "Empfänger gespeichert"
+msgstr "Begunstigde opgeslagen"
+
+#: app.py:248 app.py:377
+msgid "Gelöscht"
+msgstr "Verwijderd"
+
+#: app.py:260 app.py:444
+msgid "Bitte einen gültigen Betrag eingeben."
+msgstr "Voer een geldig bedrag in."
+
+#: app.py:262 app.py:272 app.py:444
+msgid "Nicht genügend Guthaben auf dem Konto."
+msgstr "Onvoldoende saldo op de rekening."
+
+#: app.py:268
+msgid "Tageslimit von € 3.000 überschritten."
+msgstr "Daglimiet van € 3.000 overschreden."
+
+#: app.py:307
+msgid "Bitte Betrag und Verwendungszweck angeben."
+msgstr "Vul bedrag en omschrijving in."
+
+#: app.py:365
+msgid "Dauerauftrag angelegt"
+msgstr "Periodieke opdracht aangemaakt"
+
+#: app.py:397
+msgid "Karte entsperrt"
+msgstr "Kaart gedeblokkeerd"
+
+#: app.py:397
+msgid "Karte gesperrt"
+msgstr "Kaart geblokkeerd"
+
+#: app.py:400 app.py:405 app.py:421
+msgid "Aktualisiert"
+msgstr "Bijgewerkt"
+
+#: app.py:407
+msgid "Limit muss zwischen 50 und 5.000 liegen."
+msgstr "Limiet moet tussen 50 en 5.000 liggen."
+
+#: app.py:453
+msgid "Umbuchung durchgeführt"
+msgstr "Overboeking uitgevoerd"
+
+#: app.py:477
+msgid "Kreditanfrage eingereicht"
+msgstr "Kredietaanvraag ingediend"
+
+#: templates/_ben_form.html:5 templates/profile.html:7
+msgid "Name"
+msgstr "Naam"
+
+#: templates/_ben_form.html:5
+msgid "Bank"
+msgstr "Bank"
+
+#: templates/_ben_form.html:5 templates/profile.html:7
+msgid "E-Mail"
+msgstr "E-mail"
+
+#: templates/_ben_form.html:5 templates/profile.html:7
+msgid "Adresse"
+msgstr "Adres"
+
+#: templates/_ben_form.html:5
+msgid "Bezeichnung (optional)"
+msgstr "Label (optioneel)"
+
+#: templates/_ben_form.html:9 templates/cards.html:19 templates/profile.html:11
+#: templates/savings.html:28
+msgid "Speichern"
+msgstr "Opslaan"
+
+#: templates/base.html:5
+msgid "Online-Banking"
+msgstr "Online bankieren"
+
+#: templates/base.html:16 templates/login.html:11
+msgid "Demo – alle Daten sind fiktiv, es wird kein echtes Geld bewegt."
+msgstr "Demo – alle gegevens zijn fictief, er wordt geen echt geld verplaatst."
+
+#: templates/base.html:17
+msgid "Demo zurücksetzen"
+msgstr "Demo resetten"
+
+#: templates/base.html:20
+msgid "Übersicht"
+msgstr "Overzicht"
+
+#: templates/base.html:20 templates/beneficiaries.html:5
+#: templates/dashboard.html:15 templates/transfer.html:13
+#: templates/transfer_done.html:7 templates/transfer_review.html:7
+msgid "Empfänger"
+msgstr "Begunstigde"
+
+#: templates/base.html:20 templates/cards.html:3 templates/dashboard.html:16
+msgid "Karten"
+msgstr "Kaarten"
+
+#: templates/base.html:20 templates/debits.html:3
+msgid "Lastschriften"
+msgstr "Incasso's"
+
+#: templates/base.html:20 templates/savings.html:3
+msgid "Sparen"
+msgstr "Sparen"
+
+#: templates/base.html:20 templates/credit.html:3
+msgid "Kredit"
+msgstr "Krediet"
+
+#: templates/base.html:20
+msgid "Umsätze & Auszüge"
+msgstr "Transacties & afschriften"
+
+#: templates/base.html:20 templates/base.html:41 templates/notifications.html:4
+msgid "Mitteilungen"
+msgstr "Meldingen"
+
+#: templates/base.html:20 templates/profile.html:3
+msgid "Meine Daten"
+msgstr "Mijn gegevens"
+
+#: templates/base.html:45
+msgid "Abmelden"
+msgstr "Uitloggen"
+
+#: templates/base.html:56
+msgid "IBAN kopiert"
+msgstr "IBAN gekopieerd"
+
+#: templates/beneficiaries.html:5
+msgid "Verwalten Sie Ihre gespeicherten Zahlungsempfänger."
+msgstr "Beheer uw opgeslagen begunstigden."
+
+#: templates/beneficiaries.html:6 templates/statements.html:7
+msgid "Suchen…"
+msgstr "Zoeken…"
+
+#: templates/beneficiaries.html:18
+msgid "Überweisen"
+msgstr "Overschrijven"
+
+#: templates/beneficiaries.html:19 templates/profile.html:18
+msgid "Bearbeiten"
+msgstr "Bewerken"
+
+#: templates/beneficiaries.html:20
+msgid "Empfänger wirklich löschen?"
+msgstr "Begunstigde echt verwijderen?"
+
+#: templates/beneficiaries.html:20 templates/transfer.html:41
+msgid "Löschen"
+msgstr "Verwijderen"
+
+#: templates/beneficiaries.html:23
+msgid "Noch keine Empfänger."
+msgstr "Nog geen begunstigden."
+
+#: templates/beneficiaries.html:26
+msgid "Empfänger bearbeiten"
+msgstr "Begunstigde bewerken"
+
+#: templates/beneficiaries.html:26
+msgid "Empfänger hinzufügen"
+msgstr "Begunstigde toevoegen"
+
+#: templates/beneficiaries.html:28 templates/profile.html:11
+msgid "Abbrechen"
+msgstr "Annuleren"
+
+#: templates/cards.html:4
+msgid "Limits, Sperre und Auslandseinsatz verwalten."
+msgstr "Limieten, blokkering en gebruik in het buitenland beheren."
+
+#: templates/cards.html:12
+msgid "Gültig bis"
+msgstr "Geldig tot"
+
+#: templates/cards.html:13
+msgid "Gesperrt"
+msgstr "Geblokkeerd"
+
+#: templates/cards.html:16
+msgid "Tageslimit"
+msgstr "Daglimiet"
+
+#: templates/cards.html:17
+msgid "Monatslimit"
+msgstr "Maandlimiet"
+
+#: templates/cards.html:21
+msgid "Zahlungen außerhalb Europas"
+msgstr "Betalingen buiten Europa"
+
+#: templates/cards.html:24
+msgid "Karte entsperren"
+msgstr "Kaart deblokkeren"
+
+#: templates/cards.html:24
+msgid "Karte sperren"
+msgstr "Kaart blokkeren"
+
+#: templates/credit.html:4
+msgid "Laufende Kredite, Rechner und Kreditanfrage."
+msgstr "Lopende kredieten, rekenhulp en kredietaanvraag."
+
+#: templates/credit.html:5
+msgid "Laufende Kredite"
+msgstr "Lopende kredieten"
+
+#: templates/credit.html:12
+msgid "Restschuld"
+msgstr "Openstaand"
+
+#: templates/credit.html:13 templates/credit.html:26
+msgid "Monatliche Rate"
+msgstr "Maandtermijn"
+
+#: templates/credit.html:14
+msgid "Laufzeitende"
+msgstr "Einddatum"
+
+#: templates/credit.html:21
+msgid "Kreditrechner"
+msgstr "Kredietcalculator"
+
+#: templates/credit.html:22 templates/savings.html:20
+#: templates/transfer.html:18 templates/transfer.html:50
+#: templates/transfer_done.html:8 templates/transfer_review.html:8
+msgid "Betrag"
+msgstr "Bedrag"
+
+#: templates/credit.html:23
+msgid "Laufzeit (Monate)"
+msgstr "Looptijd (maanden)"
+
+#: templates/credit.html:24
+msgid "Zinssatz p.a."
+msgstr "Rente per jaar"
+
+#: templates/credit.html:27
+msgid "Zinsen gesamt"
+msgstr "Totale rente"
+
+#: templates/credit.html:28
+msgid "Gesamtkosten"
+msgstr "Totale kosten"
+
+#: templates/credit.html:30 templates/transfer.html:19
+#: templates/transfer.html:51 templates/transfer_review.html:9
+msgid "Verwendungszweck"
+msgstr "Omschrijving"
+
+#: templates/credit.html:31
+msgid "Kredit anfragen"
+msgstr "Krediet aanvragen"
+
+#: templates/credit.html:34
+msgid "Meine Anfragen"
+msgstr "Mijn aanvragen"
+
+#: templates/credit.html:35
+msgid "In Prüfung"
+msgstr "In behandeling"
+
+#: templates/dashboard.html:5
+msgid "Grüß Gott"
+msgstr "Goedendag"
+
+#: templates/dashboard.html:10
+msgid "Gesamtsaldo"
+msgstr "Totaal saldo"
+
+#: templates/dashboard.html:17
+msgid "Kontoauszüge"
+msgstr "Afschriften"
+
+#: templates/dashboard.html:21
+msgid "Ungelesene Mitteilungen"
+msgstr "Ongelezen meldingen"
+
+#: templates/dashboard.html:21 templates/dashboard.html:38
+msgid "Alle anzeigen"
+msgstr "Alles tonen"
+
+#: templates/dashboard.html:23 templates/notifications.html:13
+msgid "Keine neuen Mitteilungen."
+msgstr "Geen nieuwe meldingen."
+
+#: templates/dashboard.html:26
+msgid "Meine Konten"
+msgstr "Mijn rekeningen"
+
+#: templates/dashboard.html:30
+msgid "Girokonto"
+msgstr "Betaalrekening"
+
+#: templates/dashboard.html:30 templates/savings.html:10
+msgid "Sparkonto"
+msgstr "Spaarrekening"
+
+#: templates/dashboard.html:38
+msgid "Letzte Umsätze"
+msgstr "Recente transacties"
+
+#: templates/debits.html:4
+msgid "Aktive SEPA-Lastschriftmandate."
+msgstr "Actieve SEPA-incassomachtigingen."
+
+#: templates/debits.html:7 templates/transfer.html:36
+msgid "Aktiv"
+msgstr "Actief"
+
+#: templates/debits.html:7
+msgid "Ausgesetzt"
+msgstr "Opgeschort"
+
+#: templates/debits.html:7 templates/debits.html:17
+msgid "Widerrufen"
+msgstr "Ingetrokken"
+
+#: templates/debits.html:11
+msgid "Gläubiger-ID"
+msgstr "Incassant-ID"
+
+#: templates/debits.html:11
+msgid "Mandatsreferenz"
+msgstr "Machtigingskenmerk"
+
+#: templates/debits.html:12
+msgid "Letzter Betrag"
+msgstr "Laatste bedrag"
+
+#: templates/debits.html:16
+msgid "Aussetzen"
+msgstr "Opschorten"
+
+#: templates/debits.html:16 templates/transfer.html:40
+msgid "Fortsetzen"
+msgstr "Hervatten"
+
+#: templates/debits.html:17
+msgid "Mandat endgültig widerrufen?"
+msgstr "Machtiging definitief intrekken?"
+
+#: templates/login.html:3 templates/login.html:22
+msgid "Anmelden"
+msgstr "Inloggen"
+
+#: templates/login.html:10
+msgid "Banking an der Donau – klar, sicher, jederzeit."
+msgstr "Bankieren aan de Donau – helder, veilig, altijd."
+
+#: templates/login.html:18
+msgid "Willkommen im Online-Banking"
+msgstr "Welkom bij Online Bankieren"
+
+#: templates/login.html:18
+msgid "Melden Sie sich mit Ihrer Verfügernummer an."
+msgstr "Log in met uw klantnummer."
+
+#: templates/login.html:20 templates/login.html:25 templates/profile.html:15
+msgid "Verfügernummer"
+msgstr "Klantnummer"
+
+#: templates/login.html:21 templates/login.html:26
+msgid "Passwort"
+msgstr "Wachtwoord"
+
+#: templates/login.html:24
+msgid "Demo-Zugang"
+msgstr "Demo-toegang"
+
+#: templates/notifications.html:5
+msgid "Alle als gelesen markieren"
+msgstr "Alles als gelezen markeren"
+
+#: templates/notifications.html:10
+msgid "Neu"
+msgstr "Nieuw"
+
+#: templates/notifications.html:11
+msgid "Gelesen"
+msgstr "Gelezen"
+
+#: templates/profile.html:4
+msgid ""
+"Diese Angaben erscheinen als Auftraggeber in Ihren "
+"Überweisungsbestätigungen."
+msgstr ""
+"Deze gegevens verschijnen als opdrachtgever in uw "
+"overschrijvingsbevestigingen."
+
+#: templates/profile.html:7
+msgid "PLZ"
+msgstr "Postcode"
+
+#: templates/profile.html:7
+msgid "Ort"
+msgstr "Plaats"
+
+#: templates/profile.html:7
+msgid "Telefon"
+msgstr "Telefoon"
+
+#: templates/profile.html:22
+msgid "Bankverbindung"
+msgstr "Bankgegevens"
+
+#: templates/profile.html:27
+msgid "IBAN kopieren"
+msgstr "IBAN kopiëren"
+
+#: templates/savings.html:4
+msgid "Zinsen, Sparziele und Umbuchungen."
+msgstr "Rente, spaardoelen en overboekingen."
+
+#: templates/savings.html:11
+msgid "Zinssatz"
+msgstr "Rente"
+
+#: templates/savings.html:15
+msgid "Sparziel"
+msgstr "Spaardoel"
+
+#: templates/savings.html:15
+msgid "erreicht"
+msgstr "bereikt"
+
+#: templates/savings.html:17
+msgid "von"
+msgstr "van"
+
+#: templates/savings.html:21
+msgid "Einzahlen"
+msgstr "Storten"
+
+#: templates/savings.html:22
+msgid "Abheben"
+msgstr "Opnemen"
+
+#: templates/savings.html:24
+msgid "Ziel ändern"
+msgstr "Doel wijzigen"
+
+#: templates/savings.html:26
+msgid "Name des Ziels"
+msgstr "Naam van het doel"
+
+#: templates/savings.html:27
+msgid "Zielbetrag"
+msgstr "Doelbedrag"
+
+#: templates/statements.html:4
+msgid "Umsätze & Kontoauszüge"
+msgstr "Transacties & afschriften"
+
+#: templates/statements.html:5
+msgid "Durchsuchen, filtern und als PDF herunterladen."
+msgstr "Zoeken, filteren en als pdf downloaden."
+
+#: templates/statements.html:8
+msgid "Art"
+msgstr "Soort"
+
+#: templates/statements.html:9
+msgid "Alle"
+msgstr "Alle"
+
+#: templates/statements.html:9
+msgid "Eingänge"
+msgstr "Inkomend"
+
+#: templates/statements.html:9
+msgid "Ausgänge"
+msgstr "Uitgaand"
+
+#: templates/statements.html:10
+msgid "Von"
+msgstr "Van"
+
+#: templates/statements.html:11
+msgid "Bis"
+msgstr "Tot"
+
+#: templates/statements.html:12
+msgid "Betrag min."
+msgstr "Bedrag min."
+
+#: templates/statements.html:13
+msgid "Betrag max."
+msgstr "Bedrag max."
+
+#: templates/statements.html:14
+msgid "Filtern"
+msgstr "Filteren"
+
+#: templates/statements.html:14
+msgid "Filter zurücksetzen"
+msgstr "Filters wissen"
+
+#: templates/statements.html:19
+msgid "Keine Umsätze gefunden."
+msgstr "Geen transacties gevonden."
+
+#: templates/statements.html:22
+msgid "Monatliche Kontoauszüge"
+msgstr "Maandelijkse afschriften"
+
+#: templates/transfer.html:5
+msgid "SEPA-Überweisung an einen gespeicherten Empfänger."
+msgstr "SEPA-overschrijving naar een opgeslagen begunstigde."
+
+#: templates/transfer.html:5
+msgid "Tageslimit: € 3.000"
+msgstr "Daglimiet: € 3.000"
+
+#: templates/transfer.html:9 templates/transfer_review.html:6
+msgid "Auftraggeberkonto"
+msgstr "Van rekening"
+
+#: templates/transfer.html:15
+msgid "Empfänger wählen"
+msgstr "Kies begunstigde"
+
+#: templates/transfer.html:20
+msgid "Weiter"
+msgstr "Verder"
+
+#: templates/transfer.html:23
+msgid "Neuer Empfänger"
+msgstr "Nieuwe begunstigde"
+
+#: templates/transfer.html:28
+msgid "Daueraufträge"
+msgstr "Periodieke opdrachten"
+
+#: templates/transfer.html:35 templates/transfer.html:52
+msgid "Monatlich"
+msgstr "Maandelijks"
+
+#: templates/transfer.html:35 templates/transfer.html:52
+msgid "Wöchentlich"
+msgstr "Wekelijks"
+
+#: templates/transfer.html:35 templates/transfer.html:53
+msgid "Nächste Ausführung"
+msgstr "Volgende uitvoering"
+
+#: templates/transfer.html:36
+msgid "Pausiert"
+msgstr "Gepauzeerd"
+
+#: templates/transfer.html:39
+msgid "Jetzt ausführen"
+msgstr "Nu uitvoeren"
+
+#: templates/transfer.html:40
+msgid "Pausieren"
+msgstr "Pauzeren"
+
+#: templates/transfer.html:44
+msgid "Keine Daueraufträge."
+msgstr "Geen periodieke opdrachten."
+
+#: templates/transfer.html:47
+msgid "Dauerauftrag anlegen"
+msgstr "Periodieke opdracht aanmaken"
+
+#: templates/transfer.html:54
+msgid "Anlegen"
+msgstr "Aanmaken"
+
+#: templates/transfer_done.html:5
+msgid "Überweisung durchgeführt"
+msgstr "Overschrijving uitgevoerd"
+
+#: templates/transfer_done.html:9
+msgid "Referenz"
+msgstr "Referentie"
+
+#: templates/transfer_done.html:10
+msgid "Datum"
+msgstr "Datum"
+
+#: templates/transfer_done.html:11
+msgid "Neuer Kontostand"
+msgstr "Nieuw saldo"
+
+#: templates/transfer_done.html:14
+msgid "Bestätigung per E-Mail gesendet an"
+msgstr "Bevestiging per e-mail verzonden naar"
+
+#: templates/transfer_done.html:15
+msgid "E-Mail-Versand ist noch nicht eingerichtet."
+msgstr "E-mailverzending is nog niet ingesteld."
+
+#: templates/transfer_done.html:16
+msgid "Tageslimit für E-Mails erreicht."
+msgstr "Daglimiet voor e-mails bereikt."
+
+#: templates/transfer_done.html:17
+msgid "E-Mail-Bestätigung konnte nicht gesendet werden."
+msgstr "E-mailbevestiging kon niet worden verzonden."
+
+#: templates/transfer_done.html:20
+msgid "PDF herunterladen"
+msgstr "Pdf downloaden"
+
+#: templates/transfer_done.html:21
+msgid "Neue Überweisung"
+msgstr "Nieuwe overschrijving"
+
+#: templates/transfer_review.html:3
+msgid "Überweisung prüfen"
+msgstr "Overschrijving controleren"
+
+#: templates/transfer_review.html:13
+msgid "Jetzt überweisen"
+msgstr "Nu overschrijven"
+
+#: templates/transfer_review.html:14
+msgid "Zurück"
+msgstr "Terug"
+

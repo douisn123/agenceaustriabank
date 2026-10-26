@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import amount, txrow, langswitch, logo with context %}
+{% block content %}
+<h1 class="text-2xl sm:text-3xl font-bold tracking-tight" data-testid="page-title">{{ _('Umsätze & Kontoauszüge') }}</h1>
+<p class="text-sm text-slate-500 mt-1 mb-8">{{ _('Durchsuchen, filtern und als PDF herunterladen.') }}</p>
+<form class="card p-5 grid grid-cols-2 lg:grid-cols-7 gap-3 items-end" data-testid="tx-filter-form">
+  <label class="col-span-2"><span class="label">{{ _('Suchen…') }}</span><input name="q" value="{{ a.get('q', '') }}" class="input" data-testid="tx-search-input"></label>
+  <label><span class="label">{{ _('Art') }}</span><select name="type" class="input" data-testid="tx-type-select">
+    {% for v, l in [('', _('Alle')), ('in', _('Eingänge')), ('out', _('Ausgänge')), ('transfer', _('Überweisung')), ('standing', _('Dauerauftrag')), ('card', _('Kartenzahlung')), ('debit', _('Lastschrift')), ('savings', _('Umbuchung'))] %}<option value="{{ v }}" {{ 'selected' if a.get('type', '') == v }}>{{ l }}</option>{% endfor %}</select></label>
+  <label><span class="label">{{ _('Von') }}</span><input type="date" name="date_from" value="{{ a.get('date_from', '') }}" class="input" data-testid="tx-from-input"></label>
+  <label><span class="label">{{ _('Bis') }}</span><input type="date" name="date_to" value="{{ a.get('date_to', '') }}" class="input" data-testid="tx-to-input"></label>
+  <label><span class="label">{{ _('Betrag min.') }}</span><input name="min" value="{{ a.get('min', '') }}" class="input font-mono" data-testid="tx-min-input"></label>
+  <label><span class="label">{{ _('Betrag max.') }}</span><input name="max" value="{{ a.get('max', '') }}" class="input font-mono" data-testid="tx-max-input"></label>
+  <div class="col-span-2 lg:col-span-7 flex gap-2"><button class="btn btn-sm" data-testid="tx-filter-button">{{ _('Filtern') }}</button><a href="{{ url_for('statements') }}" class="btn btn-ghost btn-sm" data-testid="tx-reset-button">{{ _('Filter zurücksetzen') }}</a></div>
+</form>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+  <div class="lg:col-span-2 card p-5 min-w-0" data-testid="tx-list">
+    <p class="text-xs text-slate-500 mb-2" data-testid="tx-count">{{ rows|length }}</p>
+    {% for tx in rows %}{{ txrow(tx) }}{% else %}<p class="text-sm text-slate-500">{{ _('Keine Umsätze gefunden.') }}</p>{% endfor %}
+  </div>
+  <div class="card p-5 h-fit">
+    <h3 class="font-semibold mb-3">{{ _('Monatliche Kontoauszüge') }}</h3>
+    {% for m in months %}
+    <a href="{{ url_for('statement', month=m) }}" class="flex justify-between items-center py-2 border-b border-slate-100 last:border-0 text-sm hover:text-gold" data-testid="statement-{{ m }}"><span class="capitalize">{{ m|month }}</span><span class="text-xs font-semibold">PDF ↓</span></a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

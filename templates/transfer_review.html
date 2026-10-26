@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-2xl sm:text-3xl font-bold tracking-tight mb-8" data-testid="page-title">{{ _('Überweisung prüfen') }}</h1>
+<div class="card p-6 max-w-xl fade-up" data-testid="transfer-review">
+  <dl class="grid grid-cols-3 gap-y-3 text-sm">
+    <dt class="label">{{ _('Auftraggeberkonto') }}</dt><dd class="col-span-2">{{ account.name }}<br><span class="font-mono text-xs">{{ account.iban|iban }}</span></dd>
+    <dt class="label">{{ _('Empfänger') }}</dt><dd class="col-span-2">{{ ben.name }}<br><span class="font-mono text-xs">{{ ben.iban|iban }}</span><br><span class="text-xs text-slate-500">{{ ben.email }}</span></dd>
+    <dt class="label">{{ _('Betrag') }}</dt><dd class="col-span-2 font-mono text-xl font-semibold" data-testid="review-amount">{{ tx_amount|money }}</dd>
+    <dt class="label">{{ _('Verwendungszweck') }}</dt><dd class="col-span-2">{{ purpose }}</dd>
+  </dl>
+  <form method="post" action="{{ url_for('transfer') }}" class="flex gap-2 mt-6">
+    {% for k, v in [('account_id', account.id), ('beneficiary_id', ben.id), ('amount', tx_amount), ('purpose', purpose)] %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+    <button name="step" value="confirm" class="btn btn-gold" data-testid="transfer-confirm-button">{{ _('Jetzt überweisen') }}</button>
+    <button name="step" value="edit" class="btn btn-ghost" data-testid="transfer-back-button">{{ _('Zurück') }}</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-2xl sm:text-3xl font-bold tracking-tight" data-testid="page-title">{{ _('Sparen') }}</h1>
+<p class="text-sm text-slate-500 mt-1 mb-8">{{ _('Zinsen, Sparziele und Umbuchungen.') }} · {{ giro.name }}: <span class="font-mono" data-testid="giro-balance">{{ giro.balance|money }}</span></p>
+<div class="grid lg:grid-cols-2 gap-6">
+  {% for s in savings %}
+  {% set pct = [100, (s.balance / s.goal_amount * 100)|round(0)]|min if s.goal_amount else 0 %}
+  <div class="card p-6 fade-up" data-testid="savings-card-{{ loop.index }}">
+    <div class="flex justify-between items-start">
+      <div><p class="label">{{ _('Sparkonto') }}</p><p class="font-semibold mt-1">{{ s.name }}</p></div>
+      <span class="badge bg-gold/20">{{ _('Zinssatz') }} {{ s.rate|num }} %</span>
+    </div>
+    <p class="font-mono text-2xl font-semibold mt-4" data-testid="savings-balance-{{ loop.index }}">{{ s.balance|money }}</p>
+    <div class="mt-5">
+      <div class="flex justify-between text-xs"><span>{{ _('Sparziel') }}: {{ s.goal_name }}</span><span>{{ pct|int }} % {{ _('erreicht') }}</span></div>
+      <div class="h-2 rounded-full bg-slate-100 mt-2 overflow-hidden"><div class="h-full bg-gold transition-all" style="width: {{ pct }}%"></div></div>
+      <p class="text-xs text-slate-500 mt-1">{{ s.balance|money }} {{ _('von') }} {{ s.goal_amount|money }}</p>
+    </div>
+    <form method="post" class="flex flex-wrap gap-2 mt-5"><input type="hidden" name="savings_id" value="{{ s.id }}">
+      <input name="amount" placeholder="{{ _('Betrag') }}" inputmode="decimal" class="input !mt-0 flex-1 min-w-[120px] font-mono" required data-testid="savings-amount-input-{{ loop.index }}">
+      <button name="action" value="deposit" class="btn btn-sm" data-testid="savings-deposit-button-{{ loop.index }}">{{ _('Einzahlen') }}</button>
+      <button name="action" value="withdraw" class="btn btn-ghost btn-sm" data-testid="savings-withdraw-button-{{ loop.index }}">{{ _('Abheben') }}</button>
+    </form>
+    <details class="mt-4"><summary class="text-xs underline cursor-pointer" data-testid="savings-goal-toggle-{{ loop.index }}">{{ _('Ziel ändern') }}</summary>
+      <form method="post" class="grid grid-cols-2 gap-2 mt-3"><input type="hidden" name="savings_id" value="{{ s.id }}"><input type="hidden" name="action" value="goal">
+        <input name="goal_name" value="{{ s.goal_name }}" class="input !mt-0" placeholder="{{ _('Name des Ziels') }}" data-testid="savings-goal-name-{{ loop.index }}">
+        <input name="goal_amount" value="{{ s.goal_amount }}" class="input !mt-0 font-mono" placeholder="{{ _('Zielbetrag') }}" data-testid="savings-goal-amount-{{ loop.index }}">
+        <button class="btn btn-sm col-span-2" data-testid="savings-goal-save-{{ loop.index }}">{{ _('Speichern') }}</button></form>
+    </details>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

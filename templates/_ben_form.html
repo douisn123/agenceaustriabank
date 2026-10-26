@@ -1,0 +1,11 @@
+{% macro ben_form(b=None, next='') %}
+<form method="post" action="{{ url_for('ben_save') }}" class="grid sm:grid-cols-2 gap-4" data-testid="beneficiary-form">
+  {% if b %}<input type="hidden" name="id" value="{{ b.id }}">{% endif %}
+  {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+  {% for k, l, req in [('name', _('Name'), True), ('iban', 'IBAN', True), ('bic', 'BIC', False), ('bank', _('Bank'), False), ('email', _('E-Mail'), True), ('address', _('Adresse'), False), ('label', _('Bezeichnung (optional)'), False)] %}
+  <label class="block {{ 'sm:col-span-2' if k in ['name','iban','email','address'] }}"><span class="label">{{ l }}{{ ' *' if req }}</span>
+    <input name="{{ k }}" value="{{ b[k] if b else '' }}" {{ 'required' if req }} type="{{ 'email' if k == 'email' else 'text' }}" class="input {{ 'font-mono uppercase' if k in ['iban','bic'] }}" data-testid="ben-{{ k }}-input"></label>
+  {% endfor %}
+  <div class="sm:col-span-2"><button class="btn" data-testid="ben-save-button">{{ _('Speichern') }}</button></div>
+</form>
+{% endmacro %}

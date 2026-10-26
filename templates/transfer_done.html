@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card p-6 sm:p-8 max-w-xl fade-up" data-testid="transfer-success">
+  <div class="h-12 w-12 rounded-full bg-green-100 text-green-700 grid place-items-center text-2xl mb-4">✓</div>
+  <h1 class="text-2xl font-bold tracking-tight" data-testid="page-title">{{ _('Überweisung durchgeführt') }}</h1>
+  <dl class="grid grid-cols-3 gap-y-3 text-sm mt-6">
+    <dt class="label">{{ _('Empfänger') }}</dt><dd class="col-span-2">{{ tx.beneficiary.name }}</dd>
+    <dt class="label">{{ _('Betrag') }}</dt><dd class="col-span-2 font-mono font-semibold">{{ (-tx.amount)|money }}</dd>
+    <dt class="label">{{ _('Referenz') }}</dt><dd class="col-span-2 font-mono" data-testid="tx-reference">{{ tx.reference }}</dd>
+    <dt class="label">{{ _('Datum') }}</dt><dd class="col-span-2">{{ tx.date|fdate(True) }}</dd>
+    <dt class="label">{{ _('Neuer Kontostand') }}</dt><dd class="col-span-2 font-mono font-semibold" data-testid="new-balance">{{ account.balance|money }}</dd>
+  </dl>
+  <div class="mt-6 rounded-md px-4 py-3 text-sm {{ 'bg-green-50 text-green-800' if tx.email_status == 'sent' else 'bg-amber-50 text-amber-800' }}" data-testid="email-status-{{ tx.email_status }}">
+    {% if tx.email_status == 'sent' %}{{ _('Bestätigung per E-Mail gesendet an') }} {{ tx.beneficiary.email }}
+    {% elif tx.email_status == 'not_configured' %}{{ _('E-Mail-Versand ist noch nicht eingerichtet.') }}
+    {% elif tx.email_status == 'rate_limited' %}{{ _('Tageslimit für E-Mails erreicht.') }}
+    {% else %}{{ _('E-Mail-Bestätigung konnte nicht gesendet werden.') }}{% endif %}
+  </div>
+  <div class="flex flex-wrap gap-2 mt-6">
+    <a href="{{ url_for('receipt', token=tx.pdf_token) }}" target="_blank" class="btn btn-gold" data-testid="download-pdf-button">{{ _('PDF herunterladen') }}</a>
+    <a href="{{ url_for('transfer') }}" class="btn btn-ghost" data-testid="new-transfer-button">{{ _('Neue Überweisung') }}</a>
+  </div>
+</div>
+{% endblock %}

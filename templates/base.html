@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="{{ 'de-AT' if lang == 'de' else 'nl-NL' }}">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UniCredit Bank Austria – {% block title %}{{ _('Online-Banking') }}{% endblock %}</title>
+  <link rel="icon" type="image/png" sizes="128x128"
+      href="{{ url_for('static', filename='favicon-128x128.png') }}">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{navy:'#0B192C',vienna:'#1E3E62',gold:'#D4AF37',slate2:'#F8FAFC'},fontFamily:{sans:['Inter','sans-serif'],head:['Plus Jakarta Sans','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+{% from '_macros.html' import amount, txrow, langswitch, logo with context %}
+<body class="bg-slate2 text-navy font-sans antialiased">
+</div>
+{% block body %}
+{% set nav = [('dashboard', _('Übersicht')), ('transfer', _('Überweisung')), ('beneficiaries', _('Empfänger')), ('cards', _('Karten')), ('debits', _('Lastschriften')), ('savings', _('Sparen')), ('credit', _('Kredit')), ('statements', _('Umsätze & Auszüge')), ('notifications', _('Mitteilungen')), ('profile', _('Meine Daten'))] %}
+<div class="flex min-h-[calc(100vh-30px)]">
+  <aside id="sidebar" class="fixed lg:sticky top-0 z-40 h-screen w-64 shrink-0 bg-navy p-5 flex flex-col gap-8 -translate-x-full lg:translate-x-0 transition-transform">
+    {{ logo(True) }}
+    <nav class="flex flex-col gap-1">
+      {% for ep, label in nav %}
+      <a href="{{ url_for(ep) }}" data-testid="nav-{{ ep }}" class="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors {{ 'bg-white/10 text-white border-l-2 border-gold' if request.endpoint == ep else 'text-white/65 hover:text-white hover:bg-white/5' }}">
+        <span class="flex-1">{{ label }}</span>{% if ep == 'notifications' and unread %}<span class="text-[10px] bg-gold text-navy rounded-full px-1.5 py-0.5 font-bold">{{ unread }}</span>{% endif %}
+      </a>
+      {% endfor %}
+    </nav>
+  </aside>
+  <div id="overlay" class="fixed inset-0 bg-navy/50 z-30 hidden lg:hidden" onclick="toggleNav()"></div>
+  <div class="flex-1 min-w-0 flex flex-col">
+    <header class="h-16 border-b border-slate-200 bg-white/80 backdrop-blur-md sticky top-0 z-20 flex items-center justify-between px-4 sm:px-8">
+      <div class="flex items-center gap-3">
+        <button class="lg:hidden p-2 rounded-md hover:bg-slate-100" onclick="toggleNav()" data-testid="mobile-menu-button" aria-label="Menu">☰</button>
+        <div class="lg:hidden hidden sm:block">{{ logo() }}</div>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-4">
+        {{ langswitch() }}
+        <a href="{{ url_for('notifications') }}" class="relative p-2 rounded-md hover:bg-slate-100" data-testid="header-notifications-button" aria-label="{{ _('Mitteilungen') }}">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          {% if unread %}<span class="absolute top-0.5 right-0.5 min-w-4 h-4 px-1 rounded-full bg-gold text-[10px] font-bold text-navy" data-testid="header-unread-count">{{ unread }}</span>{% endif %}
+        </a>
+        <form method="post" action="{{ url_for('logout') }}"><button class="text-sm border border-slate-300 rounded-md px-3 py-1.5 hover:bg-navy hover:text-white transition-colors" data-testid="logout-button" aria-label="{{ _('Abmelden') }}"><span class="hidden sm:inline">{{ _('Abmelden') }}</span><svg class="sm:hidden h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></button></form>
+      </div>
+    </header>
+    <main class="flex-1 p-4 sm:p-8 lg:p-10 max-w-6xl w-full mx-auto">
+      {% include '_flash.html' %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+<script>function toggleNav(){document.getElementById('sidebar').classList.toggle('-translate-x-full');document.getElementById('overlay').classList.toggle('hidden')}</script>
+{% endblock %}
+<script>function copyIban(v,btn){navigator.clipboard&&navigator.clipboard.writeText(v);const o=btn.innerText;btn.innerText='✓ {{ _("IBAN kopiert") }}';setTimeout(()=>btn.innerText=o,1500)}</script>
+</body>
+</html>

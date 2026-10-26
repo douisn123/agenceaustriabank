@@ -1,0 +1,29 @@
+{% macro amount(v, cls='') %}<span class="font-mono font-semibold tracking-tight {{ 'text-green-600' if v > 0 }} {{ cls }}">{{ '+' if v > 0 }}{{ v|money }}</span>{% endmacro %}
+{% macro langswitch(dark=False) %}
+  <div class="inline-flex rounded-full p-0.5 text-xs font-semibold {{ 'bg-white/10' if dark else 'bg-slate-200/70' }}" data-testid="language-switcher">
+    {% for l in ['de','nl'] %}<a href="{{ url_for('set_lang', code=l) }}" data-testid="language-switcher-{{ l }}" class="px-3 py-1 rounded-full transition-colors {{ 'bg-gold text-navy' if lang == l else ('text-white/70 hover:text-white' if dark else 'text-slate-500 hover:text-navy') }}">{{ l|upper }}</a>{% endfor %}
+  </div>
+{% endmacro %}
+{% macro logo(light=False, size='h-9 w-9', text='text-lg', bank='text-[9px]') %}
+  <a href="{{ url_for('dashboard') }}" class="flex items-center gap-2.5" data-testid="brand-logo">
+    <img src="{{ url_for('static', filename='logo-mark.png') }}"
+     alt="Danubia Bank"
+     class="{{ size }} object-contain {{ 'ring-1 ring-white/20' if light }}">
+    <span class="flex flex-col leading-none">
+      <span class="font-head font-extrabold {{ text }} tracking-tight {{ 'text-white' if light else 'text-navy' }}">Danubia</span>
+      <span class="font-head font-bold {{ bank }} tracking-[0.45em] text-gold mt-1">BANK</span>
+    </span>
+  </a>
+{% endmacro %}
+{% macro txrow(tx) %}
+  <div class="flex items-center justify-between gap-4 py-3 border-b border-slate-100 last:border-0" data-testid="tx-row">
+    <div class="min-w-0">
+      <div class="font-medium text-sm truncate">{{ tx.counterparty }}</div>
+      <div class="text-xs text-slate-500 truncate">{{ tx.date|fdate }} · {{ category_label(tx.category) }} · {{ tx.purpose }}</div>
+    </div>
+    <div class="flex items-center gap-3 shrink-0">
+      {% if tx.pdf_token %}<a href="{{ url_for('receipt', token=tx.pdf_token) }}" target="_blank" class="text-xs font-semibold underline underline-offset-2 hover:text-gold" data-testid="tx-pdf-link">PDF</a>{% endif %}
+      {{ amount(tx.amount, 'text-sm') }}
+    </div>
+  </div>
+{% endmacro %}

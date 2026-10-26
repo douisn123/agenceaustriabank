@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import amount, txrow, langswitch, logo with context %}
+{% block title %}{{ _('Anmelden') }}{% endblock %}
+{% block body %}
+<div class="min-h-[calc(100vh-30px)] grid lg:grid-cols-2">
+  <div class="hidden lg:flex relative bg-navy grain overflow-hidden">
+    <img src="{{ url_for('static', filename='login-background.jpg') }}" alt="" class="absolute inset-0 w-full h-full object-cover opacity-40">
+    <div class="relative z-10 flex flex-col justify-between p-12 text-white">
+      {{ logo(True, 'h-12 w-12', 'text-2xl', 'text-[11px]') }}
+      <div class="max-w-md fade-up"><h2 class="text-4xl font-bold leading-tight">{{ _('Banking an der Donau – klar, sicher, jederzeit.') }}</h2><div class="h-1 w-16 bg-gold mt-6"></div></div>
+    </div>
+  </div>
+  <div class="flex flex-col p-6 sm:p-12">
+    <div class="flex items-center justify-between"><div class="lg:hidden">{{ logo() }}</div><div class="ml-auto">{{ langswitch() }}</div></div>
+    <div class="flex-1 flex items-center justify-center">
+      <form method="post" class="w-full max-w-sm space-y-6 fade-up" data-testid="login-form">
+        <img src="{{ url_for('static', filename='logo-mark.png') }}" alt="" class="h-16 w-16 rounded-[22%] shadow-lg mb-6" data-testid="login-logo-mark">
+        <div><h1 class="text-3xl font-bold tracking-tight">{{ _('Willkommen im Online-Banking') }}</h1><p class="text-sm text-slate-500 mt-2">{{ _('Melden Sie sich mit Ihrer Verfügernummer an.') }}</p></div>
+        {% include '_flash.html' %}
+        <label class="block"><span class="label">{{ _('Verfügernummer') }}</span><input name="customer_number" inputmode="numeric" class="input font-mono h-11" autocomplete="username" data-testid="login-customer-input" required></label>
+        <label class="block"><span class="label">{{ _('Passwort') }}</span><input name="password" type="password" class="input h-11" autocomplete="current-password" data-testid="login-password-input" required></label>
+        <button class="btn w-full h-11" data-testid="login-submit-button">{{ _('Anmelden') }}</button>
+        <div class="rounded-lg border border-gold/40 bg-gold/10 p-4 text-sm" data-testid="demo-credentials">
+          <div class="font-semibold mb-1">{{ _('Demo-Zugang') }}</div>
+          <div class="font-mono text-xs">{{ _('Verfügernummer') }}: 990303</div>
+          <div class="font-mono text-xs">{{ _('Passwort') }}: 0275</div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
