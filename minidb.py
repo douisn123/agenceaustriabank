@@ -202,9 +202,9 @@ class Collection:
 
 class Database:
     def __init__(self, url, auth_token=None):
-        base = url.replace("libsql://", "https://").rstrip("/")
+        base = url.strip().replace("libsql://", "https://").rstrip("/")
         self.pipeline_url = base + "/v2/pipeline"
-        self.auth_token = auth_token
+        self.auth_token = auth_token.strip() if auth_token else auth_token
         self.lock = threading.RLock()
         self._pipeline([
             ("CREATE TABLE IF NOT EXISTS docs (col TEXT NOT NULL, data TEXT NOT NULL)", None),
