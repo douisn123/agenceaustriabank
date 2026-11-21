@@ -2,7 +2,7 @@ import random
 import uuid
 from datetime import datetime, timedelta, timezone
 
-from werkzeug.security import generate_password_hash
+import bcrypt
 
 DEMO_CUSTOMER = "990303"
 DEMO_PASSWORD = "0275"
@@ -24,14 +24,14 @@ def iso(d):
 def seed_user(db, user_id=None):
     existing = db.users.find_one({"customer_number": DEMO_CUSTOMER})
     if existing:
-        if not existing["password_hash"].startswith(("scrypt:", "pbkdf2:")):
-            db.users.update_one({"id": existing["id"]}, {"$set": {"password_hash": generate_password_hash(DEMO_PASSWORD)}})
+        if not existing["password_hash"].startswith("$2"):
+            db.users.update_one({"id": existing["id"]}, {"$set": {"password_hash": bcrypt.hashpw(DEMO_PASSWORD.encode(), bcrypt.gensalt()).decode()}})
         return
     now = datetime.now(timezone.utc)
     u = user_id or uid()
     db.users.insert_one({
         "id": u, "customer_number": DEMO_CUSTOMER,
-        "password_hash": generate_password_hash(DEMO_PASSWORD),
+        "password_hash": bcrypt.hashpw(DEMO_PASSWORD.encode(), bcrypt.gensalt()).decode(),
         "name": "ALLABAUER SIEGLINDE", "address": "Praterstraße 42/7", "zip": "1020", "city": "Wien",
         "email": "habibdjaton1@gmail.com", "phone": "+43 660 1234567",
     })
