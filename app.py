@@ -1,25 +1,28 @@
+import hashlib
+import hmac
 import os
 import re
 import secrets
+import time
 from datetime import datetime, timedelta, timezone
 from functools import wraps
 from pathlib import Path
 
+import bcrypt
 from babel.numbers import format_currency
 from dotenv import load_dotenv
 from flask import Flask, abort, flash, g, redirect, render_template, request, session, url_for, make_response
 from flask_babel import Babel, format_date, format_datetime, format_decimal, gettext as _
+from minidb import Database, ReturnDocument
 from werkzeug.exceptions import NotFound
 from werkzeug.middleware.proxy_fix import ProxyFix
-from werkzeug.security import check_password_hash
 
 load_dotenv(Path(__file__).parent / ".env")
-from docs import receipt_pdf, send_confirmation, statement_pdf  # noqa: E402
-from seed import reset_user, seed_user, uid, update_demo_balances # noqa: E402
-from minidb import Database, ReturnDocument  # noqa: E402
+from docs import receipt_pdf, send_confirmation, send_otp, send_receipt_link, statement_pdf  # noqa: E402
+from seed import reset_user, seed_user, uid  # noqa: E402
 
 LANGS = {"de": "de_AT", "nl": "nl_NL"}
-DAILY_TRANSFER_LIMIT = float("inf")
+DAILY_TRANSFER_LIMIT = 3000.0
 EMAIL_DAILY_LIMIT = int(os.environ.get("EMAIL_DAILY_LIMIT", "50"))
 NOID = {"_id": 0}
 HAS_EMAIL_LOGO = (Path(__file__).parent / "static" / "logo-email.png").exists()
@@ -28,11 +31,7 @@ app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 app.config.update(SECRET_KEY=os.environ["SECRET_KEY"], PERMANENT_SESSION_LIFETIME=timedelta(days=30),
                   SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE="Lax", BABEL_DEFAULT_LOCALE="de")
-if os.environ.get("VERCEL"):
-    db = Database(os.environ["TURSO_DATABASE_URL"], os.environ.get("TURSO_AUTH_TOKEN"))
-else:
-    DB_PATH = os.environ.get("DB_PATH") or str(Path(__file__).parent / "danubia.db")
-    db = Database(f"file:{DB_PATH}")
+db = Database(os.environ["TURSO_DATABASE_URL"], os.environ.get("TURSO_AUTH_TOKEN"))
 
 
 def get_lang():
@@ -41,7 +40,6 @@ def get_lang():
 
 babel = Babel(app, locale_selector=lambda: get_lang())
 seed_user(db)
-update_demo_balances(db)
 
 
 def now():
@@ -157,7 +155,7 @@ def set_lang(code):
 def login():
     if request.method == "POST":
         u = db.users.find_one({"customer_number": request.form.get("customer_number", "").strip()}, NOID)
-        if u and check_password_hash(u["password_hash"], request.form.get("password", "")):
+        if u and bcrypt.checkpw(request.form.get("password", "").encode(), u["password_hash"].encode()):
             session.permanent = True
             session["uid"] = u["id"]
             return redirect(url_for("dashboard"))
@@ -290,13 +288,16 @@ def execute_transfer(account, ben, amount, purpose, category="transfer"):
         "sender": {"name": u["name"], "address": u["address"], "zip": u["zip"], "city": u["city"], "iban": account["iban"], "bic": account["bic"]},
         "pdf_token": secrets.token_urlsafe(24), "pdf_expires": (now() + timedelta(days=30)).isoformat(),
     }
-    pdf_url = url_for("receipt", token=tx["pdf_token"], _external=True)
+    receipt_url = url_for("receipt", token=tx["pdf_token"], _external=True)
     sent_today = db.transactions.count_documents({"user_id": u["id"], "email_status": "sent", "date": {"$gte": day}})
     if sent_today >= EMAIL_DAILY_LIMIT:
         status, email_id = "rate_limited", None
     else:
-        status, email_id = send_confirmation(tx, tx["sender"], lang, receipt_pdf(tx, tx["sender"], lang), pdf_url,
+        status, email_id = send_confirmation(tx, tx["sender"], lang, receipt_pdf(tx, tx["sender"], lang), None,
                                               url_for("static", filename="logo-email.png", _external=True) if HAS_EMAIL_LOGO else None)
+        if status == "sent":
+            time.sleep(1)  # évite la limite de débit de Resend entre deux envois rapprochés
+            send_receipt_link(tx, lang, receipt_url)
     tx.update(email_status=status, email_id=email_id)
     db.transactions.insert_one(tx)
     notify("transfer_done", {"amount": amount, "name": ben["name"]})
@@ -343,11 +344,71 @@ def transfer_done(tx_id):
     return render_template("transfer_done.html", tx=tx, account=own("accounts", tx["account_id"]))
 
 
-@app.route("/receipts/<token>")
-def receipt(token):
+# ---------- Justificatif : lien sécurisé + code à usage unique ----------
+def _hash(value):
+    return hmac.new(app.config["SECRET_KEY"].encode(), value.encode(), hashlib.sha256).hexdigest()
+
+
+def _receipt_or_404(token):
     tx = db.transactions.find_one({"pdf_token": token}, NOID)
     if not tx or tx["pdf_expires"] < now().isoformat():
         abort(404)
+    return tx
+
+
+def _receipt_unlocked(token):
+    return session.get("receipt_ok", {}).get(token, 0) > time.time()
+
+
+def _issue_code(tx, token):
+    """Crée un code, l'enregistre (haché) dans Turso et l'envoie au bénéficiaire. Max. 1 envoi par minute."""
+    if time.time() - tx.get("otp_sent_at", 0) < 60:
+        return False
+    code = f"{secrets.randbelow(10**6):06d}"
+    db.transactions.update_one({"pdf_token": token}, {"$set": {
+        "otp_hash": _hash(code), "otp_expires": time.time() + 600, "otp_attempts": 0, "otp_sent_at": time.time()}})
+    send_otp(tx, tx.get("lang", "de"), code)
+    return True
+
+
+@app.route("/receipts/<token>")
+def receipt(token):
+    tx = _receipt_or_404(token)
+    if _receipt_unlocked(token):
+        return render_template("receipt_view.html", token=token, tx=tx)
+    return render_template("receipt_code.html", token=token, step="send", error=None)
+
+
+@app.route("/receipts/<token>/code", methods=["POST"])
+def receipt_send_code(token):
+    tx = _receipt_or_404(token)
+    if not _issue_code(tx, token):
+        return render_template("receipt_code.html", token=token, step="enter",
+                               error=_("Bitte warten Sie eine Minute, bevor Sie einen neuen Code anfordern.")), 429
+    return render_template("receipt_code.html", token=token, step="enter", error=None)
+
+
+@app.route("/receipts/<token>/verify", methods=["POST"])
+def receipt_verify(token):
+    tx = _receipt_or_404(token)
+    if not tx.get("otp_hash") or tx.get("otp_expires", 0) < time.time() or tx.get("otp_attempts", 0) >= 5:
+        return render_template("receipt_code.html", token=token, step="send",
+                               error=_("Code abgelaufen. Bitte fordern Sie einen neuen Code an.")), 400
+    db.transactions.update_one({"pdf_token": token}, {"$inc": {"otp_attempts": 1}})
+    if not hmac.compare_digest(_hash(request.form.get("code", "").strip()), tx["otp_hash"]):
+        return render_template("receipt_code.html", token=token, step="enter", error=_("Falscher Code.")), 401
+    db.transactions.update_one({"pdf_token": token}, {"$set": {"otp_hash": None}})
+    ok = session.get("receipt_ok", {})
+    ok[token] = int(time.time()) + 900  # accès valable 15 minutes
+    session["receipt_ok"] = ok
+    return redirect(url_for("receipt", token=token))
+
+
+@app.route("/receipts/<token>/pdf")
+def receipt_pdf_file(token):
+    tx = _receipt_or_404(token)
+    if not _receipt_unlocked(token):
+        abort(403)
     resp = make_response(receipt_pdf(tx, tx["sender"], tx.get("lang", "de")))
     resp.headers.update({"Content-Type": "application/pdf", "Content-Disposition": f'inline; filename="{tx["reference"]}.pdf"'})
     return resp
@@ -467,10 +528,8 @@ def savings():
         if sav["type"] != "savings" or amt <= 0 or src["balance"] < amt:
             flash(_("Nicht genügend Guthaben auf dem Konto.") if amt > 0 else _("Bitte einen gültigen Betrag eingeben."), "error")
             return redirect(url_for("savings"))
-        if not db.accounts.find_one_and_update({"id": src["id"], "balance": {"$gte": amt}}, {"$inc": {"balance": -amt}}):
-            flash(_("Nicht genügend Guthaben auf dem Konto."), "error")
-            return redirect(url_for("savings"))
-        db.accounts.update_one({"id": dst["id"]}, {"$inc": {"balance": amt}})
+        db.accounts.update_one({"id": src["id"]}, {"$set": {"balance": round(src["balance"] - amt, 2)}})
+        db.accounts.update_one({"id": dst["id"]}, {"$set": {"balance": round(dst["balance"] + amt, 2)}})
         ts = now().isoformat()
         for acc, other, sign in [(src, dst, -1), (dst, src, 1)]:
             db.transactions.insert_one({"id": uid(), "user_id": g.user["id"], "account_id": acc["id"], "amount": sign * amt, "counterparty": other["name"],

@@ -1,4 +1,4 @@
-import base64
+﻿import base64
 import logging
 import os
 from html import escape
@@ -12,7 +12,7 @@ from reportlab.pdfgen import canvas
 from brand import draw_logo
 
 logger = logging.getLogger(__name__)
-BRAND = "UniCredit Bank Austria"
+BRAND = "Unicredit Austria Bank"
 NAVY = colors.HexColor("#0B192C")
 GOLD = colors.HexColor("#D4AF37")
 
@@ -21,29 +21,43 @@ T = {
         "receipt": "Überweisungsbestätigung", "sender": "Auftraggeber", "recipient": "Empfänger",
         "amount": "Betrag", "purpose": "Verwendungszweck", "date": "Datum", "reference": "Referenz",
         "name": "Name", "address": "Adresse", "city": "Ort", "iban": "IBAN", "bic": "BIC", "bank": "Bank",
-        "demo": "Demo-Dokument – kein echter Zahlungsverkehr. Erstellt von UniCredit Bank Austria (fiktiv).",
+        "demo": "Demo-Dokument – kein echter Zahlungsverkehr. Erstellt von Unicredit Austria Bank (fiktiv).",
         "statement": "Kontoauszug", "account": "Konto", "period": "Zeitraum", "opening": "Anfangssaldo",
         "closing": "Endsaldo", "counterparty": "Gegenpartei", "none": "Keine Umsätze in diesem Zeitraum.",
         "subject": "Überweisungsbestätigung {ref} – {amount}",
         "hello": "Guten Tag {name},",
-        "intro": "{sender} hat Ihnen über UniCredit Bank Austria eine Überweisung gesendet. Hier ist die Zusammenfassung:",
+        "intro": "{sender} hat Ihnen über Unicredit Austria Bank eine Überweisung gesendet. Hier ist die Zusammenfassung:",
         "pdf_note": "Die Bestätigung ist als PDF angehängt.",
         "download": "PDF herunterladen",
-        "footer": "Diese Nachricht wurde automatisch von UniCredit Bank Austria (Demo-Anwendung) versendet. Bitte antworten Sie nicht auf diese E-Mail. UniCredit Bank Austria fordert niemals vertrauliche Daten per E-Mail an.",
+        "footer": "Diese Nachricht wurde automatisch von Unicredit Austria Bank (Demo-Anwendung) versendet. Bitte antworten Sie nicht auf diese E-Mail. Unicredit Austria Bank fordert niemals vertrauliche Daten per E-Mail an.",
+        "link_subject": "Ihr Beleg zur Überweisung {ref}",
+        "link_intro": "Ihren Überweisungsbeleg können Sie über einen gesicherten Link abrufen. Zur Bestätigung Ihrer Identität erhalten Sie dort einen Einmalcode per E-Mail.",
+        "link_button": "Meinen Beleg ansehen",
+        "link_note": "Der Link ist 30 Tage gültig.",
+        "otp_subject": "Ihr Bestätigungscode",
+        "otp_intro": "Ihr Einmalcode lautet:",
+        "otp_note": "Der Code ist 10 Minuten gültig. Geben Sie ihn niemals an Dritte weiter.",
     },
     "nl": {
         "receipt": "Overschrijvingsbevestiging", "sender": "Opdrachtgever", "recipient": "Begunstigde",
         "amount": "Bedrag", "purpose": "Omschrijving", "date": "Datum", "reference": "Referentie",
         "name": "Naam", "address": "Adres", "city": "Plaats", "iban": "IBAN", "bic": "BIC", "bank": "Bank",
-        "demo": "Demodocument – geen echt betalingsverkeer. Aangemaakt door UniCredit Bank Austria (fictief).",
+        "demo": "Demodocument – geen echt betalingsverkeer. Aangemaakt door Unicredit Austria Bank (fictief).",
         "statement": "Rekeningafschrift", "account": "Rekening", "period": "Periode", "opening": "Beginsaldo",
         "closing": "Eindsaldo", "counterparty": "Tegenpartij", "none": "Geen transacties in deze periode.",
         "subject": "Overschrijvingsbevestiging {ref} – {amount}",
         "hello": "Beste {name},",
-        "intro": "{sender} heeft u via UniCredit Bank Austria een overschrijving gestuurd. Hier is het overzicht:",
+        "intro": "{sender} heeft u via Unicredit Austria Bank een overschrijving gestuurd. Hier is het overzicht:",
         "pdf_note": "De bevestiging is als pdf bijgevoegd.",
         "download": "Pdf downloaden",
-        "footer": "Dit bericht is automatisch verzonden door UniCredit Bank Austria(demo-applicatie). Beantwoord deze e-mail niet. UniCredit Bank Austriavraagt nooit vertrouwelijke gegevens per e-mail.",
+        "footer": "Dit bericht is automatisch verzonden door Unicredit Austria Bank(demo-applicatie). Beantwoord deze e-mail niet. Unicredit Austria Bank vraagt nooit vertrouwelijke gegevens per e-mail.",
+        "link_subject": "Uw bewijs van overschrijving {ref}",
+        "link_intro": "U kunt uw bewijs van overschrijving bekijken via een beveiligde link. Om uw identiteit te bevestigen ontvangt u daar een eenmalige code per e-mail.",
+        "link_button": "Mijn bewijs bekijken",
+        "link_note": "De link is 30 dagen geldig.",
+        "otp_subject": "Uw bevestigingscode",
+        "otp_intro": "Uw eenmalige code is:",
+        "otp_note": "De code is 10 minuten geldig. Deel deze nooit met anderen.",
     },
 }
 
@@ -54,7 +68,7 @@ def tr(lang):
 
 def money(v, lang):
     s = f"{abs(v):,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-    return f"{'-' if v < 0 else ''}€ {s}" if lang == "de" else f"{'-' if v < 0 else ''}€ {s}"
+    return f"{'-' if v < 0 else ''}€ {s}"
 
 
 def fdate(iso, lang):
@@ -168,7 +182,7 @@ def email_html(tx, sender, lang, pdf_url, logo_url=None):
     t = tr(lang)
     brand = BRAND
     if logo_url and logo_url.startswith("https://"):
-        brand = (f'<img src="{escape(logo_url)}" width="170" height="48" alt="UniCredit Bank Austria" '
+        brand = (f'<img src="{escape(logo_url)}" width="170" height="48" alt="Unicredit Austria Bank" '
                  f'style="display:block;border:0;outline:none;width:170px;height:48px">')
     ben = tx["beneficiary"]
     rows = "".join([
@@ -196,38 +210,75 @@ def email_html(tx, sender, lang, pdf_url, logo_url=None):
         '</td></tr></table>'
     )
 
-def send_confirmation(tx, sender, lang, pdf_bytes, pdf_url, logo_url=None):
-    key = os.environ.get("RESEND_API_KEY")
-    sender_addr = os.environ.get("EMAIL_FROM") or os.environ.get("MAIL_FROM")
 
+def send_confirmation(tx, sender, lang, pdf_bytes, pdf_url, logo_url=None):
+    key, sender_addr = os.environ.get("RESEND_API_KEY"), os.environ.get("EMAIL_FROM")
     if not key or not sender_addr:
         return "not_configured", None
-
     t = tr(lang)
     resend.api_key = key
-
-    logger.info(
-        "Destinataire de la confirmation : %s",
-        tx.get("beneficiary", {}).get("email")
-    )
-
     params = {
         "from": sender_addr,
         "to": [tx["beneficiary"]["email"]],
-        "subject": t["subject"].format(
-            ref=tx["reference"],
-            amount=money(abs(tx["amount"]), lang)
-        ),
+        "subject": t["subject"].format(ref=tx["reference"], amount=money(abs(tx["amount"]), lang)),
         "html": email_html(tx, sender, lang, pdf_url, logo_url),
-        "attachments": [{
-            "filename": f"{tx['reference']}.pdf",
-            "content": base64.b64encode(pdf_bytes).decode()
-        }],
+        "attachments": [{"filename": f"{tx['reference']}.pdf", "content": base64.b64encode(pdf_bytes).decode()}],
     }
-
     try:
         res = resend.Emails.send(params)
         return "sent", res.get("id")
     except Exception as e:
-        logger.error("Resend send failed for %s: %s", tx["reference"], e)
+        logger.error(f"Resend send failed for {tx['reference']}: {e}")
         return "failed", None
+
+
+# ---------- 2e e-mail (lien) et 3e e-mail (code OTP) ----------
+def _send(to, subject, html):
+    key, sender_addr = os.environ.get("RESEND_API_KEY"), os.environ.get("EMAIL_FROM")
+    if not key or not sender_addr:
+        return False
+    resend.api_key = key
+    try:
+        resend.Emails.send({"from": sender_addr, "to": [to], "subject": subject, "html": html})
+        return True
+    except Exception as e:
+        logger.error(f"Resend send failed ({subject}): {e}")
+        return False
+
+
+def _wrap(title, inner, lang):
+    t = tr(lang)
+    return (
+        '<table role="presentation" width="100%" style="background:#F8FAFC;padding:24px 0"><tr><td align="center">'
+        '<table role="presentation" width="560" style="background:#ffffff;border:1px solid #e2e8f0;border-radius:8px;font-family:Arial,sans-serif">'
+        f'<tr><td style="background:#0B192C;padding:20px 28px;border-bottom:4px solid #D4AF37;color:#ffffff;font-size:20px;font-weight:700">{BRAND}</td></tr>'
+        f'<tr><td style="padding:28px"><h2 style="margin:0 0 16px;color:#0B192C;font-size:18px">{escape(title)}</h2>'
+        f'{inner}'
+        f'<p style="color:#94a3b8;font-size:11px;margin-top:28px">{escape(t["footer"])}</p></td></tr></table>'
+        '</td></tr></table>'
+    )
+
+
+def send_receipt_link(tx, lang, link):
+    """2e e-mail : bouton « Meinen Beleg ansehen »."""
+    t = tr(lang)
+    ben = tx["beneficiary"]
+    inner = (
+        f'<p style="color:#0B192C;font-size:14px">{escape(t["hello"].format(name=ben["name"]))}</p>'
+        f'<p style="color:#0B192C;font-size:14px">{escape(t["link_intro"])}</p>'
+        f'<p style="margin:24px 0"><a href="{escape(link)}" style="background:#0B192C;color:#ffffff;padding:12px 22px;'
+        f'border-radius:6px;text-decoration:none;font-weight:600;font-size:14px">{escape(t["link_button"])}</a></p>'
+        f'<p style="color:#64748b;font-size:12px">{escape(t["link_note"])}</p>'
+    )
+    return _send(ben["email"], t["link_subject"].format(ref=tx["reference"]), _wrap(t["receipt"], inner, lang))
+
+
+def send_otp(tx, lang, code):
+    """3e e-mail : code à usage unique."""
+    t = tr(lang)
+    inner = (
+        f'<p style="color:#0B192C;font-size:14px">{escape(t["otp_intro"])}</p>'
+        f'<p style="font-size:30px;font-weight:700;letter-spacing:8px;color:#0B192C;margin:16px 0">{escape(code)}</p>'
+        f'<p style="color:#64748b;font-size:12px">{escape(t["otp_note"])}</p>'
+    )
+    return _send(tx["beneficiary"]["email"], t["otp_subject"], _wrap(t["otp_subject"], inner, lang))

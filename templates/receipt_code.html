@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unicredit Austria Bank</title>
+  <style>
+    body{font-family:Arial,sans-serif;background:#F8FAFC;margin:0;color:#0B192C}
+    .box{max-width:420px;margin:60px auto;background:#fff;border:1px solid #e2e8f0;border-top:4px solid #D4AF37;border-radius:8px;padding:32px}
+    button{background:#0B192C;color:#fff;border:0;border-radius:6px;padding:12px 22px;font-weight:600;font-size:14px;cursor:pointer;width:100%}
+    button.secondary{background:#fff;color:#0B192C;border:1px solid #cbd5e1}
+    input{width:100%;box-sizing:border-box;padding:12px;font-size:22px;letter-spacing:8px;text-align:center;margin:12px 0;border:1px solid #cbd5e1;border-radius:6px}
+    .err{color:#DC2626;font-size:14px}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>{{ _("Überweisungsbeleg") }}</h2>
+    {% if error %}<p class="err">{{ error }}</p>{% endif %}
+
+    {% if step == "send" %}
+      <p>{{ _("Um Ihre Überweisungsbestätigung anzusehen, fordern Sie bitte Ihren Einmalcode (OTP) an. Er wird per E-Mail an Sie gesendet.") }}</p>
+      <form method="post" action="{{ url_for('receipt_send_code', token=token) }}">
+        <button type="submit">{{ _("Meinen OTP-Code erhalten") }}</button>
+      </form>
+
+    {% else %}
+      <p>{{ _("Wir haben Ihnen einen 6-stelligen Code per E-Mail gesendet.") }}</p>
+      <form method="post" action="{{ url_for('receipt_verify', token=token) }}">
+        <input name="code" inputmode="numeric" maxlength="6" autocomplete="one-time-code" required autofocus>
+        <button type="submit">{{ _("Bestätigen") }}</button>
+      </form>
+      <form method="post" action="{{ url_for('receipt_send_code', token=token) }}" style="margin-top:14px">
+        <button type="submit" class="secondary">{{ _("Code erneut senden") }}</button>
+      </form>
+    {% endif %}
+  </div>
+</body>
+</html>
